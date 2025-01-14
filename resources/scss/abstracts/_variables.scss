@@ -1,0 +1,39 @@
+// Colors
+$primary: #2c3e50;
+$secondary: #34495e;
+$accent: #3498db;
+$success: #27ae60;
+$warning: #f39c12;
+$danger: #c0392b;
+$light: #ecf0f1;
+$dark: #2c3e50;
+
+// Typography
+$font-family-sans: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-family-heading: 'Montserrat', sans-serif;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 600;
+
+// Spacing
+$spacing-base: 1rem;
+$spacing-xs: $spacing-base * 0.25;
+$spacing-sm: $spacing-base * 0.5;
+$spacing-md: $spacing-base;
+$spacing-lg: $spacing-base * 1.5;
+$spacing-xl: $spacing-base * 2;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Z-index
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;

@@ -1,0 +1,18 @@
+@use "sass:color";
+@use '../abstracts/variables' as *;
+
+.btn-custom {
+    background: $accent;
+    color: white;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: color.adjust($accent, $lightness: -10%);
+        transform: translateY(-2px);
+    }
+}

@@ -1,0 +1,81 @@
+@use 'abstracts/colors';
+@use 'abstracts/variables';
+@use 'abstracts/animations';
+@use 'layout/header';
+@use 'layout/footer';
+@use 'pages/home';
+@use 'pages/products';
+@use 'pages/about';
+
+// Import external CSS
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700&display=swap');
+
+// Base styles
+body {
+    font-family: variables.$font-family-sans;
+    color: colors.color('gray', 'darkest');
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: variables.$font-family-heading;
+    font-weight: variables.$font-weight-bold;
+}
+
+// Hero section
+.hero {
+    background: linear-gradient(45deg,
+        colors.color('primary', 'base'),
+        colors.color('accent', 'base')
+    );
+    color: colors.color('white', 'base');
+    padding: variables.$spacing-xl 0;
+}
+
+// Button styles
+.btn {
+    &-primary {
+        background: colors.color('primary', 'base');
+        &:hover {
+            background: colors.color('primary', 'dark');
+        }
+    }
+    &-accent {
+        background: colors.color('accent', 'base');
+        &:hover {
+            background: colors.color('accent', 'dark');
+        }
+    }
+}
+
+// Card styles
+.card {
+    background: colors.color('white', 'base');
+    border: 1px solid colors.color('gray', 'light');
+    box-shadow: 0 2px 4px colors.color('gray', 'light');
+}
+
+// Form styles
+.form-control {
+    border-color: colors.color('gray', 'light');
+    &:focus {
+        border-color: colors.color('primary', 'base');
+        box-shadow: 0 0 0 0.2rem rgba(colors.color('primary', 'base'), 0.25);
+    }
+}
+
+// Alert styles
+.alert {
+    &-primary {
+        background: colors.color('primary', 'light');
+        border-color: colors.color('primary', 'base');
+        color: colors.color('primary', 'dark');
+    }
+    &-accent {
+        background: colors.color('accent', 'light');
+        border-color: colors.color('accent', 'base');
+        color: colors.color('accent', 'dark');
+    }
+}

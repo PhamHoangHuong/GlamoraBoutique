@@ -1,0 +1,42 @@
+@use "sass:map";
+
+// Color Palette
+$colors: (
+    'primary': (
+        'light': #4A90E2,
+        'base': #2C5282,
+        'dark': #1A365D
+    ),
+    'secondary': (
+        'light': #F7FAFC,
+        'base': #EDF2F7,
+        'dark': #E2E8F0
+    ),
+    'accent': (
+        'light': #F6AD55,
+        'base': #ED8936,
+        'dark': #C05621
+    ),
+    'gray': (
+        'lightest': #FFFFFF,
+        'light': #F7FAFC,
+        'base': #CBD5E0,
+        'dark': #4A5568,
+        'darkest': #2D3748
+    ),
+    'success': (
+        'light': #68D391,
+        'base': #48BB78,
+        'dark': #2F855A
+    ),
+    'white': (
+        'base': #FFFFFF
+    ),
+    'black': (
+        'base': #1A202C
+    )
+);
+
+@function color($color, $tone: 'base') {
+    @return map.get(map.get($colors, $color), $tone);
+}

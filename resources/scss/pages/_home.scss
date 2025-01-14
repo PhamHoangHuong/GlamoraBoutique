@@ -1,0 +1,351 @@
+@use '../abstracts/colors';
+@use '../abstracts/variables';
+
+// Hero Section
+.hero-section {
+    position: relative;
+    background: linear-gradient(135deg, colors.color('primary', 'dark'), colors.color('primary', 'base'));
+    padding: 200px 0 120px;
+    margin-top: -140px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: url('/images/pattern.png') repeat;
+        opacity: 0.1;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    h1 {
+        font-size: 4rem;
+        font-weight: 800;
+        color: colors.color('white', 'base');
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
+        @media (max-width: variables.$breakpoint-md) {
+            font-size: 2.5rem;
+            padding-top: 60px;
+        }
+    }
+
+    p {
+        font-size: 1.5rem;
+        color: colors.color('secondary', 'light');
+        margin-bottom: 2.5rem;
+        max-width: 600px;
+        line-height: 1.6;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-custom {
+        display: inline-flex;
+        align-items: center;
+        padding: 1.25rem 3rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: colors.color('white', 'base');
+        background: linear-gradient(135deg, colors.color('accent', 'base'), colors.color('accent', 'dark'));
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(colors.color('accent', 'dark'), 0.3);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(colors.color('accent', 'dark'), 0.4);
+        }
+    }
+
+    @media (max-width: variables.$breakpoint-md) {
+        padding: 160px 0 80px;
+        margin-top: -80px;
+
+        .container {
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.25rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-custom {
+            padding: 1rem 2.5rem;
+            font-size: 1.125rem;
+        }
+    }
+}
+
+// Featured Products Section
+.featured-products {
+    padding: 80px 0;
+    background: colors.color('secondary', 'light');
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 3rem;
+        color: colors.color('gray', 'darkest');
+        position: relative;
+        padding-bottom: 1rem;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, colors.color('primary', 'base'), colors.color('accent', 'base'));
+            border-radius: 2px;
+        }
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        padding: 1rem;
+    }
+
+    .product-card {
+        background: colors.color('white', 'base');
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+            .product-image img {
+                transform: scale(1.05);
+            }
+        }
+
+        .product-image {
+            position: relative;
+            padding-top: 75%;
+            overflow: hidden;
+            background: colors.color('secondary', 'light');
+            border-radius: 12px 12px 0 0;
+
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+
+                &:not([src]), &[src=""], &[src="#"] {
+                    background: linear-gradient(135deg, colors.color('primary', 'light'), colors.color('primary', 'base'));
+                    &::after {
+                        content: 'No Image';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        color: colors.color('white', 'base');
+                        font-size: 1rem;
+                    }
+                }
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                    to bottom,
+                    transparent 0%,
+                    rgba(0, 0, 0, 0.2) 100%
+                );
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            &:hover::after {
+                opacity: 1;
+            }
+
+            .product-tags {
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+                z-index: 2;
+                display: flex;
+                gap: 0.5rem;
+
+                span {
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 20px;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+
+                    &.new {
+                        background: colors.color('primary', 'base');
+                        color: colors.color('white', 'base');
+                    }
+
+                    &.sale {
+                        background: colors.color('accent', 'base');
+                        color: colors.color('white', 'base');
+                    }
+                }
+            }
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            background: colors.color('white', 'base');
+            border-radius: 0 0 12px 12px;
+
+            .product-name {
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: colors.color('gray', 'darkest');
+                margin-bottom: 0.5rem;
+                display: block;
+                text-decoration: none;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+
+                &:hover {
+                    color: colors.color('primary', 'base');
+                }
+            }
+
+            .product-price {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+
+                .original-price {
+                    text-decoration: line-through;
+                    color: colors.color('gray', 'base');
+                    font-size: 0.875rem;
+                }
+
+                span:not(.original-price) {
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    color: colors.color('primary', 'base');
+                }
+            }
+
+            .product-actions {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                gap: 0.75rem;
+
+                .btn {
+                    border: none;
+                    padding: 0.75rem;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.5rem;
+
+                    &-outline {
+                        background: colors.color('secondary', 'light');
+                        color: colors.color('primary', 'base');
+
+                        &:hover {
+                            background: colors.color('primary', 'base');
+                            color: colors.color('white', 'base');
+                        }
+                    }
+
+                    &-primary {
+                        background: colors.color('primary', 'base');
+                        color: colors.color('white', 'base');
+
+                        &:hover {
+                            background: colors.color('primary', 'dark');
+                            transform: translateY(-2px);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Features Section
+.features-section {
+    padding: 60px 0;
+    background: colors.color('white', 'base');
+
+    .feature-card {
+        text-align: center;
+        padding: 2rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-5px);
+
+            .feature-icon {
+                background: linear-gradient(135deg, colors.color('primary', 'base'), colors.color('accent', 'base'));
+                color: colors.color('white', 'base');
+                transform: scale(1.1);
+            }
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: colors.color('secondary', 'light');
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: colors.color('primary', 'base');
+            transition: all 0.3s ease;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: colors.color('gray', 'darkest');
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            color: colors.color('gray', 'dark');
+            line-height: 1.6;
+        }
+    }
+}

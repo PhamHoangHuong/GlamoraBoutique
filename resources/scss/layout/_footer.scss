@@ -1,0 +1,6 @@
+@use '../abstracts/colors';
+
+.site-footer {
+    background: colors.color('primary', 'dark');
+    color: colors.color('white', 'base');
+}
