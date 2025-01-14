@@ -6,6 +6,8 @@
 @use 'pages/home';
 @use 'pages/products';
 @use 'pages/about';
+@use 'pages/product-detail';
+@use 'pages/contact';
 
 // Import external CSS
 @import '@fortawesome/fontawesome-free/css/all.min.css';

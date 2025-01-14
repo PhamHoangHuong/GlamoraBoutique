@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 
 interface Product {
@@ -55,10 +55,17 @@ export default function Products() {
                         {products.map((product) => (
                             <div key={product.id} className="product-card">
                                 <div className="product-image">
-                                    <img src={product.image} alt={product.name} />
+                                    <Link href={route('products.show', product.id)}>
+                                        <img src={product.image} alt={product.name} />
+                                    </Link>
                                 </div>
                                 <div className="product-content">
-                                    <h3 className="product-name">{product.name}</h3>
+                                    <Link
+                                        href={route('products.show', product.id)}
+                                        className="product-name"
+                                    >
+                                        {product.name}
+                                    </Link>
                                     <div className="product-price">{product.price}</div>
                                     <p className="product-description">{product.description}</p>
                                     <div className="product-actions">

@@ -25,5 +25,17 @@ Route::get('/products', function () {
     return Inertia::render('Products/Index');
 })->name('products');
 
+// Trang Chi tiết sản phẩm
+Route::get('/products/{id}', function ($id) {
+    return Inertia::render('Products/Show', [
+        'id' => $id
+    ]);
+})->name('products.show');
+
+// Trang Liên hệ
+Route::get('/contact', function () {
+    return Inertia::render('Contact/Index');
+})->name('contact');
+
 // Auth routes
 require __DIR__.'/auth.php';
