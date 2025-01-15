@@ -31,6 +31,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/settings', function () {
         return Inertia::render('Admin/Settings/Index');
     })->name('settings');
+
+    Route::get('/attributes', function () {
+        return Inertia::render('Admin/Attributes/Index');
+    })->name('attributes');
 });
 
 // Trang Home

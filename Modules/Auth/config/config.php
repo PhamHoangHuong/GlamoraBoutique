@@ -2,4 +2,5 @@
 
 return [
     'name' => 'Auth',
+    'prefix' => 'auth',
 ];
