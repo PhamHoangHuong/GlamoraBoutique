@@ -6,47 +6,65 @@ echo "Starting deployment process..."
 echo "Pulling latest changes..."
 git pull origin main
 
-# 2. Install dependencies
-echo "Installing dependencies..."
-composer install
-yarn install
+# 2. Install/update Composer dependencies
+echo "Installing Composer dependencies..."
+/usr/local/bin/php81 /usr/local/bin/composer install --no-dev --optimize-autoloader
 
-# 3. Build frontend assets
+# 3. Install Node.js dependencies and build assets
+echo "Setting up Node.js environment..."
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm use 20.11.1
+
+echo "Installing Node.js dependencies..."
+npm install
+
 echo "Building frontend assets..."
-rm -rf public/build
-yarn build
+npm run build
 
-# Copy manifest file if it exists
+# Ensure build directory exists
+mkdir -p public/build
+
+# Copy manifest file
 if [ -f "public/build/.vite/manifest.json" ]; then
     cp public/build/.vite/manifest.json public/build/manifest.json
 fi
 
-# 4. Clear all caches
-echo "Clearing caches..."
-php artisan cache:clear
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
-php artisan optimize:clear
+# 4. Clear and cache Laravel configurations
+echo "Optimizing Laravel..."
+/usr/local/bin/php81 artisan cache:clear
+/usr/local/bin/php81 artisan config:cache
+/usr/local/bin/php81 artisan route:cache
+/usr/local/bin/php81 artisan view:cache
+/usr/local/bin/php81 artisan optimize
 
-# 5. Set permissions
+# 5. Set correct permissions
 echo "Setting permissions..."
-chmod -R 777 storage
-chmod -R 777 bootstrap/cache
-chmod -R 777 public/build
+find storage -type d -exec chmod 0775 {} \;
+find storage -type f -exec chmod 0664 {} \;
+find bootstrap/cache -type d -exec chmod 0775 {} \;
+find bootstrap/cache -type f -exec chmod 0664 {} \;
+find public/build -type d -exec chmod 0775 {} \;
+find public/build -type f -exec chmod 0664 {} \;
 
 # 6. Handle storage link
-echo "Checking storage link..."
+echo "Setting up storage link..."
 if [ -e public/storage ]; then
     rm public/storage
 fi
-php artisan storage:link
+/usr/local/bin/php81 artisan storage:link
 
 echo "Deployment completed!"
 
-# Show status
-echo "Checking application status..."
-php artisan --version
-echo "Node version: $(node -v)"
-echo "NPM version: $(npm -v)"
-echo "Yarn version: $(yarn -v)"
+# Show versions and status
+echo "Environment Information:"
+echo "PHP Version: $(/usr/local/bin/php81 -v | head -n 1)"
+echo "Node Version: $(node -v)"
+echo "NPM Version: $(npm -v)"
+echo "Composer Version: $(/usr/local/bin/composer -V)"
+
+# Check if key Laravel directories are writable
+echo -e "\nPermissions Check:"
+[ -w "storage" ] && echo "✓ storage directory is writable" || echo "✗ storage directory is not writable"
+[ -w "bootstrap/cache" ] && echo "✓ bootstrap/cache directory is writable" || echo "✗ bootstrap/cache directory is not writable"
+[ -w "public/build" ] && echo "✓ public/build directory is writable" || echo "✗ public/build directory is not writable"
