@@ -36,7 +36,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         return Inertia::render('Admin/Attributes/Index');
     })->name('attributes');
 });
-
 // Trang Home
 Route::get('/home', function () {
     return Inertia::render('Home/Index');
@@ -66,3 +65,4 @@ Route::get('/contact', function () {
 
 // Auth routes
 require __DIR__.'/auth.php';
+

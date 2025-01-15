@@ -29,7 +29,7 @@ export default function Index() {
 
     return (
         <MainLayout>
-            <Head title="Welcome" />
+            <Head title="Trang chủ" />
 
             {/* Hero Section */}
             <section className="hero-section">
