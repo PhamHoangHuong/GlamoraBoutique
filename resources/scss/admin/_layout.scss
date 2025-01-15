@@ -1,0 +1,38 @@
+.admin-layout {
+    .sidebar-transition {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .content-transition {
+        transition: margin-left 0.3s ease-in-out;
+    }
+
+    @media (max-width: 768px) {
+        .sidebar-mobile {
+            transform: translateX(-100%);
+            &.open {
+                transform: translateX(0);
+            }
+        }
+    }
+}
+
+// Custom scrollbar for sidebar
+.sidebar-nav {
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(156, 163, 175, 0.5);
+        border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(156, 163, 175, 0.8);
+    }
+}

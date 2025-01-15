@@ -10,6 +10,29 @@ Route::get('/', function () {
     return Inertia::render('Index');
 })->name('index');
 
+// Admin Routes
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Admin/Dashboard/Index');
+    })->name('dashboard');
+
+    Route::get('/products', function () {
+        return Inertia::render('Admin/Products/Index');
+    })->name('products');
+
+    Route::get('/orders', function () {
+        return Inertia::render('Admin/Orders/Index');
+    })->name('orders');
+
+    Route::get('/users', function () {
+        return Inertia::render('Admin/Users/Index');
+    })->name('users');
+
+    Route::get('/settings', function () {
+        return Inertia::render('Admin/Settings/Index');
+    })->name('settings');
+});
+
 // Trang Home
 Route::get('/home', function () {
     return Inertia::render('Home/Index');

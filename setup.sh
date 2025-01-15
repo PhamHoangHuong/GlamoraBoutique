@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# Check Node.js version
+NODE_VERSION=$(node -v)
+REQUIRED_VERSION="v20.0.0"
+
+if [ "$(printf '%s\n' "$REQUIRED_VERSION" "$NODE_VERSION" | sort -V | head -n1)" = "$REQUIRED_VERSION" ]; then
+    echo "Node.js version $NODE_VERSION is compatible"
+else
+    echo "Error: This project requires Node.js version $REQUIRED_VERSION or higher"
+    echo "Current version: $NODE_VERSION"
+    exit 1
+fi
+
 echo "Starting Laravel project setup..."
 
 # 1. Create necessary directories
