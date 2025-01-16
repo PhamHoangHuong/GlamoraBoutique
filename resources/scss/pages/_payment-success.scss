@@ -1,0 +1,133 @@
+@use '../abstracts/colors';
+@use '../abstracts/variables';
+
+.payment-success-page {
+    padding: 120px 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: colors.color('secondary', 'light');
+
+    .success-content {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 60px;
+        background: colors.color('white', 'base');
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+        .success-icon {
+            font-size: 5rem;
+            color: colors.color('success', 'base');
+            margin-bottom: 1.5rem;
+            animation: scaleIn 0.5s ease;
+
+            @keyframes scaleIn {
+                from {
+                    transform: scale(0);
+                    opacity: 0;
+                }
+                to {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: colors.color('gray', 'darkest');
+            margin-bottom: 2rem;
+        }
+
+        .order-details {
+            background: colors.color('secondary', 'light');
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+
+            .detail-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid colors.color('secondary', 'base');
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                span {
+                    color: colors.color('gray', 'dark');
+                }
+
+                strong {
+                    font-weight: 600;
+                    color: colors.color('primary', 'base');
+                    font-size: 1.1rem;
+                }
+            }
+        }
+
+        .thank-you-message {
+            color: colors.color('gray', 'dark');
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .success-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+
+            .btn-primary, .btn-outline {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+
+                i {
+                    font-size: 1.1rem;
+                }
+            }
+
+            .btn-primary {
+                background: colors.color('primary', 'base');
+                color: colors.color('white', 'base');
+
+                &:hover {
+                    background: colors.color('primary', 'dark');
+                    transform: translateY(-2px);
+                }
+            }
+
+            .btn-outline {
+                border: 2px solid colors.color('primary', 'base');
+                color: colors.color('primary', 'base');
+
+                &:hover {
+                    background: colors.color('primary', 'base');
+                    color: colors.color('white', 'base');
+                    transform: translateY(-2px);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: variables.$breakpoint-md) {
+    .payment-success-page {
+        padding: 80px 0;
+
+        .success-content {
+            padding: 30px;
+            margin: 0 20px;
+        }
+    }
+}

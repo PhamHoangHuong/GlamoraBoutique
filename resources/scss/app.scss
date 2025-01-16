@@ -12,6 +12,8 @@
 @use 'pages/cart';
 @use 'pages/checkout';
 @use 'pages/auth';
+@use 'pages/error';
+@use 'pages/payment-success';
 
 // Import external CSS
 @import '@fortawesome/fontawesome-free/css/all.min.css';

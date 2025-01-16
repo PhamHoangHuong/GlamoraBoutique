@@ -37,7 +37,7 @@ export default function ProductMenu() {
     return (
         <div className="tw-absolute tw-left-0 tw-right-0 tw-mt-2 tw-bg-white tw-shadow-lg tw-border-t tw-border-primary-100 tw-invisible tw-opacity-0 group-hover:tw-visible group-hover:tw-opacity-100 tw-transition-all tw-duration-200">
             <div className="container tw-mx-auto tw-px-4">
-                <div className="tw-grid tw-grid-cols-3 tw-gap-8 tw-py-6">
+                {/* <div className="tw-grid tw-grid-cols-3 tw-gap-8 tw-py-6">
                     {categories.map((category) => (
                         <div key={category.name} className="tw-space-y-4">
                             <div className="tw-flex tw-items-center tw-gap-2 tw-text-gray-800">
@@ -90,7 +90,7 @@ export default function ProductMenu() {
                             Khám phá →
                         </Link>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

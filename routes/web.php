@@ -95,3 +95,23 @@ Route::prefix('account')->name('account.')->group(function () {
     })->name('profile');
 });
 
+// UI Preview Routes
+Route::get('/preview/error-404', function () {
+    return Inertia::render('Error', [
+        'status' => 404
+    ]);
+})->name('preview.error-404');
+
+Route::get('/preview/error-500', function () {
+    return Inertia::render('Error', [
+        'status' => 500
+    ]);
+})->name('preview.error-500');
+
+Route::get('/preview/payment-success', function () {
+    return Inertia::render('PaymentSuccess', [
+        'orderNumber' => 'ORD123456',
+        'amount' => '399.000đ'
+    ]);
+})->name('preview.payment-success');
+

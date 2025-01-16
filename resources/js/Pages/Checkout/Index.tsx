@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import { useState } from 'react';
 
@@ -52,8 +52,16 @@ export default function Checkout() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle checkout logic here
+        // Giả lập xử lý thanh toán
         console.log('Checkout form:', form);
+
+        // Chuyển hướng đến trang thanh toán thành công
+        router.visit(route('preview.payment-success'), {
+            data: {
+                order_number: 'ORD' + Math.random().toString().slice(2, 8),
+                amount: total.toLocaleString() + 'đ'
+            }
+        });
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -263,7 +271,8 @@ export default function Checkout() {
                                         </div>
                                     </div>
                                     <button
-                                        type="submit"
+                                        onClick={handleSubmit}
+                                        type="button"
                                         className="tw-w-full tw-bg-primary-600 tw-text-white tw-py-3 tw-rounded-lg tw-font-semibold hover:tw-bg-primary-700 tw-transition-colors"
                                     >
                                         Đặt hàng
