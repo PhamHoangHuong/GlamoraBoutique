@@ -115,3 +115,11 @@ Route::get('/preview/payment-success', function () {
     ]);
 })->name('preview.payment-success');
 
+// Banking Payment Route
+Route::get('/payment/banking', function () {
+    return Inertia::render('Payment/Banking', [
+        'orderNumber' => request()->get('order_number', 'ORD' . rand(100000, 999999)),
+        'amount' => request()->get('amount', '0đ')
+    ]);
+})->name('payment.banking');
+

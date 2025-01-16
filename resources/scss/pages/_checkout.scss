@@ -2,32 +2,54 @@
 @use '../abstracts/variables';
 
 .checkout-page {
-    padding: 100px 0 80px;
+    min-height: calc(100vh - 64px);
     background: colors.color('secondary', 'light');
 
-    @media (max-width: variables.$breakpoint-md) {
-        padding: 80px 0 60px;
-    }
+    input[type="radio"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid colors.color('gray', '300');
+        border-radius: 50%;
+        outline: none;
+        position: relative;
 
-    .payment-method {
-        label {
-            @apply tw-transition-all;
+        &:checked {
+            border-color: colors.color('primary', 'base');
+            background-color: colors.color('primary', 'base');
 
-            &:hover {
-                @apply tw-border-primary-500;
+            &::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 0.5rem;
+                height: 0.5rem;
+                background-color: white;
+                border-radius: 50%;
             }
+        }
 
-            &.selected {
-                @apply tw-border-primary-500 tw-ring-2 tw-ring-primary-200;
-            }
+        &:focus {
+            box-shadow: 0 0 0 2px rgba(colors.color('primary', 'base'), 0.2);
         }
     }
 
-    .form-control {
-        @apply tw-transition-all;
-
+    input, select {
+        height: 40px;
         &:focus {
-            @apply tw-border-primary-500 tw-ring-2 tw-ring-primary-200;
+            outline: none;
+            border-color: colors.color('primary', 'base');
+            box-shadow: 0 0 0 3px rgba(colors.color('primary', 'base'), 0.1);
+        }
+    }
+
+    @media (max-width: variables.$breakpoint-md) {
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
     }
 }
