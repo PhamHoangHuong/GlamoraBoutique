@@ -63,6 +63,15 @@ Route::get('/contact', function () {
     return Inertia::render('Contact/Index');
 })->name('contact');
 
+// Cart Routes
+Route::get('/cart', function () {
+    return Inertia::render('Cart/Index');
+})->name('cart');
+
+Route::get('/checkout', function () {
+    return Inertia::render('Checkout/Index');
+})->name('checkout');
+
 // Auth routes
 require __DIR__.'/auth.php';
 

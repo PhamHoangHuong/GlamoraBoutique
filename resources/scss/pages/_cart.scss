@@ -1,0 +1,67 @@
+@use '../abstracts/colors';
+@use '../abstracts/variables';
+
+.cart-page {
+    padding: 100px 0 80px;
+    background: colors.color('secondary', 'light');
+
+    @media (max-width: variables.$breakpoint-md) {
+        padding: 80px 0 60px;
+    }
+
+    .cart-item {
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .quantity-controls {
+            button {
+                @apply tw-transition-all;
+
+                &:hover:not(:disabled) {
+                    @apply tw-bg-gray-100 tw-text-primary-600;
+                }
+
+                &:disabled {
+                    @apply tw-opacity-50 tw-cursor-not-allowed;
+                }
+
+                &:active:not(:disabled) {
+                    @apply tw-transform tw-scale-95;
+                }
+            }
+        }
+
+        &:hover {
+            .remove-button {
+                @apply tw-opacity-100;
+            }
+        }
+
+        .remove-button {
+            @apply tw-opacity-0 tw-transition-opacity;
+        }
+    }
+
+    .promo-code {
+        input {
+            @apply tw-transition-all;
+
+            &:focus {
+                @apply tw-border-primary-500 tw-ring-2 tw-ring-primary-200;
+            }
+        }
+
+        button {
+            @apply tw-transition-all;
+
+            &:hover {
+                @apply tw-transform tw-scale-105;
+            }
+
+            &:active {
+                @apply tw-transform tw-scale-95;
+            }
+        }
+    }
+}

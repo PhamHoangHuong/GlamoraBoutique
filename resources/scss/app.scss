@@ -9,6 +9,8 @@
 @use 'pages/about';
 @use 'pages/product-detail';
 @use 'pages/contact';
+@use 'pages/cart';
+@use 'pages/checkout';
 
 // Import external CSS
 @import '@fortawesome/fontawesome-free/css/all.min.css';
