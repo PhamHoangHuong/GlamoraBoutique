@@ -76,16 +76,56 @@
 
         .auth-links {
             display: flex;
-            gap: 16px;
+            align-items: center;
+            gap: 0.75rem;
 
-            a {
+            button {
                 color: colors.color('white', 'base');
-                text-decoration: none;
-                font-weight: 500;
+                font-size: 0.875rem;
                 transition: color 0.2s ease;
+                background: transparent;
+                border: none;
+                padding: 0;
 
                 &:hover {
                     color: colors.color('secondary', 'light');
+                }
+            }
+
+            .user-menu {
+                transition: all;
+
+                button {
+                    &:hover {
+                        img {
+                            border-color: rgba(255, 255, 255, 0.4);
+                        }
+                    }
+                }
+
+                .dropdown-menu {
+                    transform: translateY(0);
+                    transition: all 0.2s ease;
+
+                    &.enter {
+                        opacity: 0;
+                        transform: scale(0.95);
+                    }
+
+                    &.enter-active {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+
+                    &.exit {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+
+                    &.exit-active {
+                        opacity: 0;
+                        transform: scale(0.95);
+                    }
                 }
             }
         }
@@ -186,6 +226,32 @@
                     background: colors.color('secondary', 'light');
                     color: colors.color('primary', 'base');
                     font-weight: 600;
+                }
+            }
+
+            .nav-item {
+                &:hover {
+                    .nav-link {
+                        color: colors.color('primary', 'base');
+                    }
+                }
+            }
+
+            .product-menu {
+                top: 100%;
+                z-index: 40;
+                border-top: 2px solid colors.color('primary', 'base');
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: -8px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border-left: 8px solid transparent;
+                    border-right: 8px solid transparent;
+                    border-bottom: 6px solid colors.color('primary', 'base');
                 }
             }
         }
@@ -357,6 +423,36 @@
                 opacity: 1;
                 visibility: visible;
                 transform: translateY(0);
+            }
+
+            .user-menu {
+                .user-toggle {
+                    @apply tw-transition-all;
+
+                    &:hover {
+                        @apply tw-opacity-80;
+
+                        img {
+                            @apply tw-border-primary-500;
+                        }
+                    }
+                }
+
+                .dropdown-menu {
+                    @apply tw-transform tw-transition-all tw-duration-200;
+                    animation: slideIn 0.2s ease-out;
+
+                    @keyframes slideIn {
+                        from {
+                            opacity: 0;
+                            transform: translateY(-10px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                }
             }
         }
     }

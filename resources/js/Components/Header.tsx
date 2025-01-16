@@ -1,8 +1,13 @@
 import { Link } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
+import { useAuthModal } from '@/contexts/AuthModalContext';
+import MiniCart from '@/Components/cart/MiniCart';
+import ProductMenu from '@/Components/header/ProductMenu';
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const { openLogin, openRegister } = useAuthModal();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -34,8 +39,19 @@ export default function Header() {
                                 <a href="#" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
                             </div>
                             <div className="auth-links">
-                                <Link href="/login">Đăng nhập</Link>
-                                <Link href="/register">Đăng ký</Link>
+                                <button
+                                    onClick={openLogin}
+                                    className="tw-text-white hover:tw-text-gray-200 tw-text-sm tw-transition-colors"
+                                >
+                                    Đăng nhập
+                                </button>
+                                <span className="tw-text-white/50">|</span>
+                                <button
+                                    onClick={openRegister}
+                                    className="tw-text-white hover:tw-text-gray-200 tw-text-sm tw-transition-colors"
+                                >
+                                    Đăng ký
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -61,58 +77,62 @@ export default function Header() {
                         </div>
 
                         <nav className="nav-menu">
-                            <Link href="/" className="nav-link active">Trang chủ</Link>
-                            <Link href="/products" className="nav-link">Sản phẩm</Link>
+                            <Link href="/" className="nav-link">Trang chủ</Link>
+                            <div className="nav-item tw-relative tw-group">
+                                <Link
+                                    href="/products"
+                                    className="nav-link tw-flex tw-items-center tw-gap-1"
+                                >
+                                    Sản phẩm
+                                    <i className="fas fa-chevron-down tw-text-xs tw-transition-transform group-hover:tw-rotate-180"></i>
+                                </Link>
+                                <ProductMenu />
+                            </div>
                             <Link href="/about" className="nav-link">Giới thiệu</Link>
                             <Link href="/contact" className="nav-link">Liên hệ</Link>
                         </nav>
 
                         <div className="header-actions">
-                            <div className="mini-cart">
-                                <button className="cart-toggle" aria-label="Shopping Cart">
-                                    <i className="fas fa-shopping-cart"></i>
-                                    <span className="cart-count">3</span>
-                                </button>
+                            <MiniCart />
 
-                                <div className="cart-dropdown">
-                                    <div className="cart-header">
-                                        <h4>Giỏ hàng của bạn</h4>
-                                        <span className="cart-count-text">3 sản phẩm</span>
-                                    </div>
-
-                                    <div className="cart-items">
-                                        <div className="cart-item">
-                                            <img src="/images/product1.jpg" alt="Áo thun nam basic" />
-                                            <div className="item-info">
-                                                <h5>Áo thun nam basic</h5>
-                                                <div className="item-details">
-                                                    <span className="quantity">1 x</span>
-                                                    <span className="price">299.000đ</span>
-                                                </div>
-                                            </div>
-                                            <button className="remove-item" aria-label="Remove item">
-                                                <i className="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div className="cart-footer">
-                                        <div className="cart-total">
-                                            <span>Tổng cộng:</span>
-                                            <strong>897.000đ</strong>
-                                        </div>
-                                        <div className="cart-actions">
-                                            <Link href="/cart" className="btn btn-outline">Xem giỏ hàng</Link>
-                                            <Link href="/checkout" className="btn btn-primary">Thanh toán</Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="user-menu">
-                                <button className="user-toggle" aria-label="User menu">
+                            <div className="user-menu tw-relative">
+                                <button
+                                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                                    className="user-toggle tw-flex tw-items-center tw-gap-2"
+                                    aria-label="User menu"
+                                >
                                     <i className="fas fa-user"></i>
                                 </button>
+
+                                {isUserMenuOpen && (
+                                    <div className="tw-absolute tw-right-0 tw-mt-2 tw-w-48 tw-bg-white tw-rounded-lg tw-shadow-lg tw-py-1 tw-z-50">
+                                        <Link
+                                            href={route('account.orders')}
+                                            className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-50"
+                                        >
+                                            <i className="fas fa-shopping-bag tw-w-5 tw-text-gray-400"></i>
+                                            Đơn hàng của tôi
+                                        </Link>
+
+                                        <Link
+                                            href={route('account.profile')}
+                                            className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-50"
+                                        >
+                                            <i className="fas fa-user tw-w-5 tw-text-gray-400"></i>
+                                            Thông tin tài khoản
+                                        </Link>
+
+                                        <div className="tw-border-t tw-border-gray-100">
+                                            <Link
+                                                href={route('login')}
+                                                className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-50"
+                                            >
+                                                <i className="fas fa-sign-in-alt tw-w-5 tw-text-gray-400"></i>
+                                                Đăng nhập
+                                            </Link>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             <button className="mobile-menu-toggle" aria-label="Menu">

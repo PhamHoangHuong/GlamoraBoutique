@@ -75,3 +75,23 @@ Route::get('/checkout', function () {
 // Auth routes
 require __DIR__.'/auth.php';
 
+// Auth Routes
+Route::get('/login', function () {
+    return Inertia::render('Auth/Login');
+})->name('login');
+
+Route::get('/register', function () {
+    return Inertia::render('Auth/Register');
+})->name('register');
+
+// User Account Routes
+Route::prefix('account')->name('account.')->group(function () {
+    Route::get('/orders', function () {
+        return Inertia::render('Account/Orders/Index');
+    })->name('orders');
+
+    Route::get('/profile', function () {
+        return Inertia::render('Account/Profile/Index');
+    })->name('profile');
+});
+
