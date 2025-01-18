@@ -21,13 +21,62 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key tpzlfwq@glamoraboutique.online '
             cd /home/tpzlfwq/public_html &&
+            echo "Starting deployment process..." &&
+            echo "Pulling latest changes..." &&
             git pull origin main &&
-            composer install --no-dev --optimize-autoloader &&
-            yarn install &&
-            yarn build &&
-            php artisan cache:clear &&
-            php artisan config:cache &&
-            php artisan route:cache &&
-            php artisan view:cache &&
-            php artisan optimize
+
+            echo "Installing Composer dependencies..." &&
+            /usr/local/bin/php81 /usr/local/bin/composer install --no-dev --optimize-autoloader &&
+
+            echo "Setting up Node.js environment..." &&
+            export NVM_DIR="$HOME/.nvm" &&
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &&
+            nvm use 20.11.1 &&
+
+            echo "Installing Node.js dependencies..." &&
+            npm install &&
+
+            echo "Building frontend assets..." &&
+            npm run build &&
+
+            echo "Ensure build directory exists" &&
+            mkdir -p public/build &&
+
+            if [ -f "public/build/.vite/manifest.json" ]; then
+                cp public/build/.vite/manifest.json public/build/manifest.json
+            fi &&
+
+            echo "Optimizing Laravel..." &&
+            /usr/local/bin/php81 artisan cache:clear &&
+            /usr/local/bin/php81 artisan config:cache &&
+            /usr/local/bin/php81 artisan route:cache &&
+            /usr/local/bin/php81 artisan view:cache &&
+            /usr/local/bin/php81 artisan optimize &&
+
+            echo "Setting permissions..." &&
+            find storage -type d -exec chmod 0775 {} \; &&
+            find storage -type f -exec chmod 0664 {} \; &&
+            find bootstrap/cache -type d -exec chmod 0775 {} \; &&
+            find bootstrap/cache -type f -exec chmod 0664 {} \; &&
+            find public/build -type d -exec chmod 0775 {} \; &&
+            find public/build -type f -exec chmod 0664 {} \; &&
+
+            echo "Setting up storage link..." &&
+            if [ -e public/storage ]; then
+                rm public/storage
+            fi &&
+            /usr/local/bin/php81 artisan storage:link &&
+
+            echo "Deployment completed!" &&
+
+            echo "Environment Information:" &&
+            echo "PHP Version: $(/usr/local/bin/php81 -v | head -n 1)" &&
+            echo "Node Version: $(node -v)" &&
+            echo "NPM Version: $(npm -v)" &&
+            echo "Composer Version: $(/usr/local/bin/composer -V)" &&
+
+            echo -e "\nPermissions Check:" &&
+            [ -w "storage" ] && echo "✓ storage directory is writable" || echo "✗ storage directory is not writable" &&
+            [ -w "bootstrap/cache" ] && echo "✓ bootstrap/cache directory is writable" || echo "✗ bootstrap/cache directory is not writable" &&
+            [ -w "public/build" ] && echo "✓ public/build directory is writable" || echo "✗ public/build directory is not writable"
           '
