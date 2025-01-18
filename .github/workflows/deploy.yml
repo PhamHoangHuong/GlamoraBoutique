@@ -10,31 +10,24 @@ jobs:
     environment: production
 
     steps:
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: unnecessary
-          if_key_exists: replace
-
-      - name: Adding Known Hosts
-        run: ssh-keyscan -H glamoraboutique.online >> ~/.ssh/known_hosts
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H glamoraboutique.online >> ~/.ssh/known_hosts
 
       - name: Deploy & Execute Commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: glamoraboutique.online
-          username: tpzlfwq
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            cd /home/tpzlfwq/public_html
-            git pull origin main
-            composer install --no-dev --optimize-autoloader
-            yarn install
-            yarn build
-            php artisan cache:clear
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
+        run: |
+          ssh -i ~/.ssh/deploy_key tpzlfwq@glamoraboutique.online '
+            cd /home/tpzlfwq/public_html &&
+            git pull origin main &&
+            composer install --no-dev --optimize-autoloader &&
+            yarn install &&
+            yarn build &&
+            php artisan cache:clear &&
+            php artisan config:cache &&
+            php artisan route:cache &&
+            php artisan view:cache &&
             php artisan optimize
+          '
