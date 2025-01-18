@@ -43,16 +43,11 @@ jobs:
               cp public/build/.vite/manifest.json public/build/manifest.json
           fi
 
-      - name: Create Database Directory
-        run: |
-          mkdir -p database
-          touch database/database.sqlite
-
       - name: Optimize Laravel
         env:
           CACHE_DRIVER: array
+          DB_CONNECTION: array
         run: |
-          php artisan cache:clear
           php artisan config:cache
           php artisan route:cache
           php artisan view:cache
