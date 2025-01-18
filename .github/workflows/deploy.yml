@@ -1,0 +1,58 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2', '8.3']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, bcmath, zip
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.11.1'
+
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: Install Composer Dependencies
+      run: composer install --no-dev --optimize-autoloader
+
+    - name: Generate key
+      run: php artisan key:generate
+
+    - name: Install NPM Dependencies
+      run: npm install
+
+    - name: Build Assets
+      run: npm run build
+
+    - name: Directory Permissions
+      run: |
+        chmod -R 775 storage bootstrap/cache public/build
+
+    - name: FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ftp.glamoraboutique.online
+        username: huong@glamoraboutique.online
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: /public_html/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          tests/**
