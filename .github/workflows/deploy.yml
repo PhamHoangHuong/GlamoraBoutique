@@ -7,70 +7,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Deploy & Execute Commands
+        uses: appleboy/ssh-action@master
         with:
-          php-version: "8.3"
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, bcmath, zip
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20.11.1"
-
-      - name: Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: Install Yarn
-        run: npm install -g yarn
-
-      - name: Install Yarn Dependencies
-        run: yarn install
-
-      - name: Build Assets
-        run: yarn build
-
-      - name: Ensure build directory exists
-        run: mkdir -p public/build
-
-      - name: Copy manifest file
-        run: |
-          if [ -f "public/build/.vite/manifest.json" ]; then
-              cp public/build/.vite/manifest.json public/build/manifest.json
-          fi
-
-      - name: Optimize Laravel
-        env:
-          CACHE_DRIVER: array
-          DB_CONNECTION: array
-        run: |
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
-          php artisan optimize
-
-      - name: Set Permissions
-        run: |
-          chmod -R 775 storage bootstrap/cache public/build
-          find storage -type f -exec chmod 0664 {} \;
-          find bootstrap/cache -type f -exec chmod 0664 {} \;
-          find public/build -type f -exec chmod 0664 {} \;
-
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ftp.glamoraboutique.online
-          username: huong@glamoraboutique.online
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            tests/**
-            .env
-            .env.example
+          host: glamoraboutique.online
+          username: tpzlfwq
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /home/tpzlfwq/public_html
+            git pull origin main
+            composer install --no-dev --optimize-autoloader
+            yarn install
+            yarn build
+            php artisan cache:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan optimize
