@@ -17,76 +17,9 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H glamoraboutique.online >> ~/.ssh/known_hosts
 
-      - name: Deploy & Execute Commands
+      - name: Deploy using deploy.sh
         run: |
           ssh -i ~/.ssh/deploy_key tpzlfwq@glamoraboutique.online '
             cd /home/tpzlfwq/public_html &&
-            echo "Starting deployment process..." &&
-            echo "Pulling latest changes..." &&
-            git pull origin main &&
-
-            echo "Installing Composer dependencies..." &&
-            /usr/local/bin/php81 /usr/local/bin/composer install --no-dev --optimize-autoloader &&
-
-            echo "Setting up Node.js environment..." &&
-            export NVM_DIR="$HOME/.nvm" &&
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &&
-            nvm use 20.11.1 &&
-
-            echo "Installing Node.js dependencies..." &&
-            yarn install &&
-
-            echo "Cleaning existing build..." &&
-            rm -rf public/build/* &&
-
-            echo "Building frontend assets..." &&
-            VITE_APP_ENV=production yarn build &&
-
-            # Đảm bảo thư mục build tồn tại và có quyền ghi
-            mkdir -p public/build &&
-            chmod -R 775 public/build &&
-
-            echo "Optimizing Laravel..." &&
-            /usr/local/bin/php81 artisan cache:clear &&
-            /usr/local/bin/php81 artisan config:cache &&
-            /usr/local/bin/php81 artisan route:cache &&
-            /usr/local/bin/php81 artisan view:cache &&
-            /usr/local/bin/php81 artisan optimize &&
-
-            echo "Setting permissions..." &&
-            find storage -type d -exec chmod 0775 {} \; &&
-            find storage -type f -exec chmod 0664 {} \; &&
-            find bootstrap/cache -type d -exec chmod 0775 {} \; &&
-            find bootstrap/cache -type f -exec chmod 0664 {} \; &&
-            find public/build -type d -exec chmod 0775 {} \; &&
-            find public/build -type f -exec chmod 0664 {} \; &&
-
-            echo "Setting up storage link..." &&
-            if [ -e public/storage ]; then
-                rm public/storage
-            fi &&
-            /usr/local/bin/php81 artisan storage:link &&
-
-            echo "Verifying build files..." &&
-            ls -la public/build &&
-
-            if [ -f "public/build/manifest.json" ]; then
-                echo "✓ manifest.json exists"
-                cat public/build/manifest.json
-            else
-                echo "✗ manifest.json not found"
-                echo "Checking .vite directory..."
-                if [ -f "public/build/.vite/manifest.json" ]; then
-                    echo "Found in .vite directory, copying..."
-                    cp public/build/.vite/manifest.json public/build/manifest.json
-                fi
-            fi &&
-
-            echo "Deployment completed!" &&
-
-            echo "Environment Information:" &&
-            echo "PHP Version: $(/usr/local/bin/php81 -v | head -n 1)" &&
-            echo "Node Version: $(node -v)" &&
-            echo "NPM Version: $(npm -v)" &&
-            echo "Yarn Version: $(yarn --version)"
+            bash deploy.sh
           '
