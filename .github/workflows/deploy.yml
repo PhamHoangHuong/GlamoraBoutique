@@ -39,11 +39,22 @@ jobs:
             echo "Building frontend assets..." &&
             npm run build &&
 
-            echo "Ensure build directory exists" &&
             mkdir -p public/build &&
 
             if [ -f "public/build/.vite/manifest.json" ]; then
+                echo "Copying Vite manifest..." &&
                 cp public/build/.vite/manifest.json public/build/manifest.json
+            else
+                echo "Warning: Vite manifest not found in .vite directory"
+                find public/build -name "manifest.json" -type f
+            fi &&
+
+            if [ -f "public/build/manifest.json" ]; then
+                echo "✓ manifest.json exists at correct location"
+                cat public/build/manifest.json
+            else
+                echo "✗ manifest.json not found after build"
+                exit 1
             fi &&
 
             echo "Optimizing Laravel..." &&
