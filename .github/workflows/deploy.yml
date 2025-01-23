@@ -1,0 +1,25 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H glamoraboutique.online >> ~/.ssh/known_hosts
+
+      - name: Deploy using deploy.sh
+        run: |
+          ssh -i ~/.ssh/deploy_key tpzlfwq@glamoraboutique.online '
+            cd /home/tpzlfwq/public_html &&
+            bash deploy.sh
+          '
