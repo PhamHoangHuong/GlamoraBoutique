@@ -5,9 +5,12 @@
         "node": ">=20.0.0"
     },
     "scripts": {
-        "build": "vite build",
-        "dev": "vite",
-        "watch": "vite build --watch"
+        "dev": "concurrently \"php artisan serve\" \"vite\"",
+        "build": "vite build && cp public/build/.vite/manifest.json public/build/manifest.json",
+        "watch": "vite build --watch",
+        "prod": "yarn build && php artisan serve",
+        "start": "php artisan serve",
+        "vite": "vite"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
