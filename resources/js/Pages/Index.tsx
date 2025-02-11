@@ -27,6 +27,30 @@ export default function Index() {
         },
     ];
 
+    const categories = [
+        {
+            id: 1,
+            name: 'Áo Nam',
+            image: 'https://placehold.co/600x400/2C5282/FFFFFF/png?text=Áo+Nam'
+        },
+        {
+            id: 2,
+            name: 'Quần Nam',
+            image: 'https://placehold.co/600x400/2C5282/FFFFFF/png?text=Quần+Nam'
+        },
+        {
+            id: 3,
+            name: 'Mũ',
+            image: 'https://placehold.co/600x400/2C5282/FFFFFF/png?text=Mũ'
+        },
+        {
+            id: 4,
+            name: 'Phụ Kiện',
+            image: 'https://placehold.co/600x400/2C5282/FFFFFF/png?text=Phụ+Kiện'
+        },
+
+    ];
+
     return (
         <MainLayout>
             <Head title="Trang chủ" />
@@ -39,6 +63,23 @@ export default function Index() {
                     <Link href="/products" className="btn-custom">
                         Mua sắm ngay
                     </Link>
+                </div>
+            </section>
+
+            {/* Featured Products */}
+            <section className="featured-products">
+                <div className="container">
+                    <h2 className="section-title">Danh mục sản phẩm</h2>
+                    <div className="categories-grid">
+                        {categories.map(categories => (
+                            <div key={categories.id} className="product-card">
+                                <div className="product-image">
+                                    <img src={categories.image} alt={categories.name} />
+                                </div>
+                                
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 

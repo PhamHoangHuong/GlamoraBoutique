@@ -118,6 +118,18 @@
         }
     }
 
+    .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Chia thành 4 cột */
+    gap: 2rem;
+    padding: 1rem;
+}
+
+
+
+
+
+
     .products-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
