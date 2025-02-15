@@ -4,9 +4,9 @@ echo "Starting deployment process..."
 
 # 1. Handle conflicts first
 echo "Handling potential conflicts..."
-git reset --hard HEAD
-git clean -fd
+git stash save --include-untracked "Temporary stash before deployment"
 git checkout main
+git reset --hard origin/main
 
 # 2. Pull latest changes
 echo "Pulling latest changes..."
