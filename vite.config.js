@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/scss/app.scss'
             ],
             refresh: true,
+            buildDirectory: '',
         }),
         react(),
     ],
@@ -29,7 +30,15 @@ export default defineConfig({
                 manualChunks: undefined,
                 chunkFileNames: 'js/[name].js',
                 entryFileNames: 'js/[name].js',
-                assetFileNames: '[ext]/[name].[ext]'
+                assetFileNames: (assetInfo) => {
+                    if (assetInfo.name.endsWith('.css')) {
+                        return 'css/[name][extname]';
+                    }
+                    if (assetInfo.name.endsWith('.js')) {
+                        return 'js/[name][extname]';
+                    }
+                    return 'assets/[name][extname]';
+                }
             }
         }
     },

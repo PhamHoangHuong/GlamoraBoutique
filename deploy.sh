@@ -44,52 +44,28 @@ fi
 
 echo "Building frontend assets..."
 export NODE_OPTIONS="--max-old-space-size=128"
-# Sử dụng đường dẫn đầy đủ
 ESBUILD_BINARY_PATH="/opt/node/bin/esbuild" $(yarn global bin)/vite build
 
 # Ensure build directory exists and has correct permissions
-mkdir -p public/build
+mkdir -p public/build/{js,css,assets}
 chmod -R 775 public/build
 
-# Copy and verify manifest
-if [ -f "public/build/.vite/manifest.json" ]; then
-    echo "Copying manifest from .vite directory..."
-    cp public/build/.vite/manifest.json public/build/manifest.json
-    echo "Manifest copied successfully"
-    
-    # Kiểm tra nội dung manifest
-    echo "Checking manifest content..."
-    cat public/build/manifest.json
-    
-    # Kiểm tra xem manifest có chứa app.tsx không
-    if grep -q "resources/js/app.tsx" public/build/manifest.json; then
-        echo "app.tsx found in manifest"
-    else
-        echo "Error: app.tsx not found in manifest"
-        echo "Creating default manifest..."
-        # Tạo manifest mặc định với app.tsx
-        echo '{
-            "resources/js/app.tsx": {
-                "file": "js/app.js",
-                "src": "resources/js/app.tsx",
-                "isEntry": true
-            },
-            "resources/scss/app.scss": {
-                "file": "css/app.css",
-                "src": "resources/scss/app.scss",
-                "isEntry": true
-            }
-        }' > public/build/manifest.json
-    fi
-else
-    echo "Warning: manifest.json not found in .vite directory"
-    echo "Creating default manifest..."
-    # Tạo manifest mặc định
+# Copy built files to correct locations
+echo "Copying built files..."
+if [ -d "public/build/.vite" ]; then
+    cp -r public/build/.vite/* public/build/
+    rm -rf public/build/.vite
+fi
+
+# Create manifest if not exists
+if [ ! -f "public/build/manifest.json" ]; then
+    echo "Creating manifest..."
     echo '{
         "resources/js/app.tsx": {
             "file": "js/app.js",
             "src": "resources/js/app.tsx",
-            "isEntry": true
+            "isEntry": true,
+            "css": ["css/app.css"]
         },
         "resources/scss/app.scss": {
             "file": "css/app.css",
@@ -98,6 +74,24 @@ else
         }
     }' > public/build/manifest.json
 fi
+
+# Verify files exist
+echo "Verifying built files..."
+for file in "js/app.js" "css/app.css" "manifest.json"; do
+    if [ ! -f "public/build/$file" ]; then
+        echo "Error: $file not found"
+        ls -la public/build/
+        exit 1
+    else
+        echo "✓ $file exists"
+    fi
+done
+
+# Set correct permissions
+find public/build -type f -exec chmod 644 {} \;
+find public/build -type d -exec chmod 755 {} \;
+
+echo "Build completed successfully"
 
 # 5. Clear and cache Laravel configurations
 echo "Optimizing Laravel..."
