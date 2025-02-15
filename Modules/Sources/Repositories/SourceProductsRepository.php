@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Attributes\Repositories;
+namespace Modules\Sources\Repositories;
 
 use App\Repositories\BaseRepository;
 use Modules\Sources\Models\SourceProducts;
