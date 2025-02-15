@@ -8,7 +8,7 @@ git pull origin main
 
 # 2. Install/update Composer dependencies
 echo "Installing Composer dependencies..."
-/usr/local/bin/php81 /usr/local/bin/composer install --no-dev --optimize-autoloader
+/usr/local/bin/php82 /usr/local/bin/composer install --no-dev --optimize-autoloader
 
 # 3. Install Node.js dependencies and build assets
 echo "Setting up Node.js environment..."
@@ -32,11 +32,11 @@ fi
 
 # 4. Clear and cache Laravel configurations
 echo "Optimizing Laravel..."
-/usr/local/bin/php81 artisan cache:clear
-/usr/local/bin/php81 artisan config:cache
-/usr/local/bin/php81 artisan route:cache
-/usr/local/bin/php81 artisan view:cache
-/usr/local/bin/php81 artisan optimize
+/usr/local/bin/php82 artisan cache:clear
+/usr/local/bin/php82 artisan config:cache
+/usr/local/bin/php82 artisan route:cache
+/usr/local/bin/php82 artisan view:cache
+/usr/local/bin/php82 artisan optimize
 
 # 5. Set correct permissions
 echo "Setting permissions..."
@@ -52,13 +52,13 @@ echo "Setting up storage link..."
 if [ -e public/storage ]; then
     rm public/storage
 fi
-/usr/local/bin/php81 artisan storage:link
+/usr/local/bin/php82 artisan storage:link
 
 echo "Deployment completed!"
 
 # Show versions and status
 echo "Environment Information:"
-echo "PHP Version: $(/usr/local/bin/php81 -v | head -n 1)"
+echo "PHP Version: $(/usr/local/bin/php82 -v | head -n 1)"
 echo "Node Version: $(node -v)"
 echo "NPM Version: $(npm -v)"
 echo "Composer Version: $(/usr/local/bin/composer -V)"
