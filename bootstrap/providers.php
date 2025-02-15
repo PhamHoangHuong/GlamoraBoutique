@@ -7,5 +7,6 @@ return [
     Modules\GroupCustomer\Providers\RouteServiceProvider::class,
     Modules\Attributes\Providers\AttributesServiceProvider::class,
     Modules\Attributes\Providers\RouteServiceProvider::class,
-    
+    Modules\Customer\Providers\CustomerServiceProvider::class,
+    Modules\Customer\Providers\RouteServiceProvider::class,
 ];

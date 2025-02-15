@@ -46,17 +46,17 @@ class AppServiceProvider extends ServiceProvider
             AttributesRepository::class
         );
 
-        //Sources
-        $this->app->singleton(
-            SourcesRepositoryInterface::class,
-            SourcesRepository::class
-        );
+        // //Sources
+        // $this->app->singleton(
+        //     SourcesRepositoryInterface::class,
+        //     SourcesRepository::class
+        // );
 
-        //SourceProducts
-        $this->app->singleton(
-            SourceProductsRepositoryInterface::class,
-            SourceProductsRepository::class
-        );
+        // //SourceProducts
+        // $this->app->singleton(
+        //     SourceProductsRepositoryInterface::class,
+        //     SourceProductsRepository::class
+        // );
     }
 
     /**
