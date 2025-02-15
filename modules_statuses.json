@@ -2,6 +2,7 @@
     "Auth": true,
     "Location": true,
     "Attributes": true,
-    "Sources": true,
-    "GroupCustomer": true
+    "GroupCustomer": true,
+    "Customer": true,
+    "Sources": true
 }

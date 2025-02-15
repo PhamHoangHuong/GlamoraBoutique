@@ -23,9 +23,9 @@ abstract class BaseRepository implements RepositoryInterface
 
     abstract public function getModel(): string;
 
-    public function getAll()
+    public function getAll($column =['*'])
     {
-        return $this->model->all();
+        return $this->model->select($column)->get();
     }
 
     public function find(int $id, array $columns = ['*'])
@@ -94,7 +94,7 @@ abstract class BaseRepository implements RepositoryInterface
     // {
     //     return response()->json([
     //         'error' => $message
-    //     ], $status);    
+    //     ], $status);
     // }
 
     // public function handleException(\Exception $e)
