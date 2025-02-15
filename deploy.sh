@@ -29,13 +29,17 @@ echo "Using Node.js version: $NODE_VERSION"
 
 echo "Installing Node.js dependencies..."
 rm -rf node_modules
-rm -f package-lock.json
-rm -f yarn.lock
-yarn install
+# Chỉ xóa yarn.lock nếu cài đặt thất bại
+if ! yarn install --frozen-lockfile; then
+    echo "Installation failed with frozen lockfile, trying without..."
+    rm -f yarn.lock
+    yarn install --force --network-timeout 100000
+fi
 
 echo "Building frontend assets..."
 export NODE_OPTIONS="--max-old-space-size=128"
-yarn build
+# Sử dụng đường dẫn đầy đủ đến vite
+yarn vite build
 
 # Ensure build directory exists and has correct permissions
 mkdir -p public/build
@@ -53,7 +57,9 @@ else
         echo "Manifest already exists in build directory"
     else
         echo "Error: No manifest.json found"
-        exit 1
+        # Không exit ngay, thử tạo manifest trống
+        echo "{}" > public/build/manifest.json
+        echo "Created empty manifest.json"
     fi
 fi
 

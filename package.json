@@ -41,5 +41,10 @@
         "moment": "^2.30.1",
         "react-icons": "^5.4.0",
         "swiper": "^11.2.2"
+    },
+    "resolutions": {
+        "@floating-ui/dom": "1.6.13",
+        "sass-embedded": "1.85.0",
+        "@esbuild/darwin-x64": "0.24.2"
     }
 }
