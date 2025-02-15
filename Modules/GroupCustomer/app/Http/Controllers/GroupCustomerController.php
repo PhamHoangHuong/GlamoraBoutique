@@ -17,11 +17,17 @@ class GroupCustomerController extends Controller
 
     protected $groupCustomerRepository;
 
+    /**
+     * @param GroupCustomerRepositoryInterface $groupCustomerRepository
+     */
     public function __construct(GroupCustomerRepositoryInterface $groupCustomerRepository)
     {
         $this->groupCustomerRepository = $groupCustomerRepository;
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $listGroup = $this->groupCustomerRepository->getAll();
@@ -31,6 +37,10 @@ class GroupCustomerController extends Controller
         return $this->toResponseSuccess(GroupCustomerResource::collection($listGroup));
     }
 
+    /**
+     * @param StoreGroupCustomerRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(StoreGroupCustomerRequest $request)
     {
         DB::beginTransaction();
@@ -43,6 +53,10 @@ class GroupCustomerController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         try {
@@ -56,6 +70,11 @@ class GroupCustomerController extends Controller
         }
     }
 
+    /**
+     * @param UpdateGroupCustomerRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(UpdateGroupCustomerRequest $request, $id)
     {
         DB::beginTransaction();
@@ -68,6 +87,10 @@ class GroupCustomerController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy($id)
     {
         DB::beginTransaction();

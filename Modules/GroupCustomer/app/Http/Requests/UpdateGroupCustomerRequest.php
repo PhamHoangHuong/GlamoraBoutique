@@ -4,6 +4,9 @@ namespace Modules\GroupCustomer\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ *
+ */
 class UpdateGroupCustomerRequest extends FormRequest
 {
     /**

@@ -6,11 +6,17 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreGroupCustomerRequest extends FormRequest
 {
+    /**
+     * @return true
+     */
     public function authorize()
     {
         return true;
     }
 
+    /**
+     * @return string[]
+     */
     public function rules()
     {
         return [
@@ -19,6 +25,10 @@ class StoreGroupCustomerRequest extends FormRequest
             'status'=>'required',
         ];
     }
+
+    /**
+     * @return string[]
+     */
     public function messages()
     {
         return [
