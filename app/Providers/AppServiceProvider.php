@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Modules\GroupCustomer\Repositories\GroupCustomerRepository;
+use Modules\GroupCustomer\Repositories\GroupCustomerRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->bindingsRepository();
+    }
+
+    protected function bindingsRepository()
+    {
+        //GroupCustomer
+        $this->app->singleton(
+            GroupCustomerRepositoryInterface::class,
+            GroupCustomerRepository::class
+        );
     }
 
     /**
