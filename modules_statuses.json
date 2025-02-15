@@ -2,5 +2,6 @@
     "Auth": true,
     "Location": true,
     "Attributes": true,
-    "GroupCustomer": true
+    "GroupCustomer": true,
+    "Customer": true
 }

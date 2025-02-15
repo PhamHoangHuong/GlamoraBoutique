@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Modules\Customer\Repositories\CustomerRepository;
+use Modules\Customer\Repositories\CustomerRepositoryInterface;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepository;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepositoryInterface;
 
@@ -24,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             GroupCustomerRepositoryInterface::class,
             GroupCustomerRepository::class
+        );
+
+        //Customer
+        $this->app->singleton(
+            CustomerRepositoryInterface::class,
+            CustomerRepository::class
         );
     }
 
