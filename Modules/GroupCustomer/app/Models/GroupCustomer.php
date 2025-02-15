@@ -18,6 +18,11 @@ class GroupCustomer extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['name','code','status','point'];
+    protected $fillable = [
+        'name',
+        'code',
+        'status',
+        'description'
+    ];
 
 }

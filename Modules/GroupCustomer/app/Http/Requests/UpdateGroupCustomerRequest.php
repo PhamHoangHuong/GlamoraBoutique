@@ -24,8 +24,9 @@ class UpdateGroupCustomerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'code'=>'required|string|max:255',
-            'status'=>'required',
+            'code' => 'required|string|max:50',
+            'status' => 'required|in:0,1,2',
+            'description' => 'nullable|string'
         ];
     }
 
