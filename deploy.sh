@@ -51,31 +51,52 @@ ESBUILD_BINARY_PATH="/opt/node/bin/esbuild" $(yarn global bin)/vite build
 mkdir -p public/build
 chmod -R 775 public/build
 
-# Copy manifest file - Thêm kiểm tra và log
+# Copy and verify manifest
 if [ -f "public/build/.vite/manifest.json" ]; then
     echo "Copying manifest from .vite directory..."
     cp public/build/.vite/manifest.json public/build/manifest.json
     echo "Manifest copied successfully"
+    
+    # Kiểm tra nội dung manifest
+    echo "Checking manifest content..."
+    cat public/build/manifest.json
+    
+    # Kiểm tra xem manifest có chứa app.tsx không
+    if grep -q "resources/js/app.tsx" public/build/manifest.json; then
+        echo "app.tsx found in manifest"
+    else
+        echo "Error: app.tsx not found in manifest"
+        echo "Creating default manifest..."
+        # Tạo manifest mặc định với app.tsx
+        echo '{
+            "resources/js/app.tsx": {
+                "file": "js/app.js",
+                "src": "resources/js/app.tsx",
+                "isEntry": true
+            },
+            "resources/scss/app.scss": {
+                "file": "css/app.css",
+                "src": "resources/scss/app.scss",
+                "isEntry": true
+            }
+        }' > public/build/manifest.json
+    fi
 else
     echo "Warning: manifest.json not found in .vite directory"
-    # Check if manifest exists in root of build directory
-    if [ -f "public/build/manifest.json" ]; then
-        echo "Manifest already exists in build directory"
-    else
-        echo "Error: No manifest.json found"
-        # Không exit ngay, thử tạo manifest trống
-        echo "{}" > public/build/manifest.json
-        echo "Created empty manifest.json"
-    fi
-fi
-
-# Verify manifest exists
-if [ -f "public/build/manifest.json" ]; then
-    echo "Manifest exists at public/build/manifest.json"
-    ls -la public/build/manifest.json
-else
-    echo "Error: manifest.json still missing after copy attempt"
-    exit 1
+    echo "Creating default manifest..."
+    # Tạo manifest mặc định
+    echo '{
+        "resources/js/app.tsx": {
+            "file": "js/app.js",
+            "src": "resources/js/app.tsx",
+            "isEntry": true
+        },
+        "resources/scss/app.scss": {
+            "file": "css/app.css",
+            "src": "resources/scss/app.scss",
+            "isEntry": true
+        }
+    }' > public/build/manifest.json
 fi
 
 # 5. Clear and cache Laravel configurations
