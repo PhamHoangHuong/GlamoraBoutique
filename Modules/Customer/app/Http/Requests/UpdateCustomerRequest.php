@@ -14,13 +14,13 @@ class UpdateCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'group_id' => 'required|exists:group_customer,id',
+            'group_id' => 'sometimes|required|exists:group_customer,id',
             'name' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:customer,email,' . $this->route('customer'),
+            'email' => 'sometimes|required|email',
             'address' => 'nullable|string|max:255',
             'point' => 'nullable|integer|min:0',
             'status' => 'integer|in:0,1',
-            'phone' => 'required|digits_between:10,15|unique:customer,phone',
+            'phone' => 'sometimes|required|digits_between:10,15',
             'password' => 'nullable|string|min:8|confirmed',
         ];
     }

@@ -11,4 +11,15 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
     {
         return Customer::class;
     }
+
+    public function findByEmail(string $email): ?Customer
+    {
+        return $this->model->where('email', $email)->first();
+    }
+
+    public function findByPhone(string $phone): ?Customer
+    {
+        return $this->model->where('phone', $phone)->first();
+    }
+    
 }
