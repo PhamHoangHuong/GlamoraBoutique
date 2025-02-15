@@ -7,6 +7,12 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Modules\Customer\Repositories\CustomerRepository;
 use Modules\Customer\Repositories\CustomerRepositoryInterface;
+use Modules\Attributes\Repositories\AttributesRepository;
+use Modules\Attributes\Repositories\AttributesRepositoryInterface;
+use Modules\Attributes\Repositories\SourceProductsRepository;
+use Modules\Attributes\Repositories\SourceProductsRepositoryInterface;
+use Modules\Attributes\Repositories\SourcesRepository;
+use Modules\Attributes\Repositories\SourcesRepositoryInterface;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepository;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepositoryInterface;
 
@@ -32,6 +38,24 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             CustomerRepositoryInterface::class,
             CustomerRepository::class
+        );
+
+        //Attributes
+        $this->app->singleton(
+            AttributesRepositoryInterface::class,
+            AttributesRepository::class
+        );
+
+        //Sources
+        $this->app->singleton(
+            SourcesRepositoryInterface::class,
+            SourcesRepository::class
+        );
+
+        //SourceProducts
+        $this->app->singleton(
+            SourceProductsRepositoryInterface::class,
+            SourceProductsRepository::class
         );
     }
 

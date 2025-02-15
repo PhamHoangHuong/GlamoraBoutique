@@ -3,5 +3,6 @@
     "Location": true,
     "Attributes": true,
     "GroupCustomer": true,
-    "Customer": true
+    "Customer": true,
+    "Sources": true
 }
