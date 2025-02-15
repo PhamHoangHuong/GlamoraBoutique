@@ -14,4 +14,6 @@ use Modules\GroupCustomer\app\Http\Controllers\GroupCustomerController;
  *
 */
 
-Route::apiResource('group-customer', GroupCustomerController::class);
+Route::group(['prefix' => 'v1'], function () {
+    Route::apiResource('group-customer', GroupCustomerController::class);
+});
