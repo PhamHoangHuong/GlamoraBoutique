@@ -4,8 +4,9 @@ echo "Starting deployment process..."
 
 # 1. Handle conflicts first
 echo "Handling potential conflicts..."
-git checkout -- yarn.lock
-rm -f package-lock.json
+git reset --hard HEAD
+git clean -fd
+git checkout main
 
 # 2. Pull latest changes
 echo "Pulling latest changes..."
@@ -17,10 +18,14 @@ php82 /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
 
 # 4. Install Node.js dependencies and build assets
 echo "Setting up Node.js environment..."
-source ~/.nvm/nvm.sh
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 nvm use 20.11.1
 
 echo "Installing Node.js dependencies..."
+rm -rf node_modules
+rm -f package-lock.json
+rm -f yarn.lock
 npm install
 
 echo "Building frontend assets..."
