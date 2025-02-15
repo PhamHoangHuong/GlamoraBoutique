@@ -142,4 +142,13 @@ ls -la public/
 ls -la storage/
 ls -la bootstrap/
 
+# Ensure build directory exists with correct permissions
+echo "Setting up build directory..."
+mkdir -p public/build
+chmod -R 775 public/build
+
+# Verify build directory permissions
+echo "Verifying build directory permissions..."
+ls -la public/build
+
 echo "Setup completed! You can now run ./deploy.sh to deploy your application."

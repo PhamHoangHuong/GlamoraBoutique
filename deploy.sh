@@ -32,12 +32,33 @@ echo "Building frontend assets..."
 export NODE_OPTIONS="--max-old-space-size=4096"
 npm run build
 
-# Ensure build directory exists
+# Ensure build directory exists and has correct permissions
 mkdir -p public/build
+chmod -R 775 public/build
 
-# Copy manifest file
+# Copy manifest file - Thêm kiểm tra và log
 if [ -f "public/build/.vite/manifest.json" ]; then
+    echo "Copying manifest from .vite directory..."
     cp public/build/.vite/manifest.json public/build/manifest.json
+    echo "Manifest copied successfully"
+else
+    echo "Warning: manifest.json not found in .vite directory"
+    # Check if manifest exists in root of build directory
+    if [ -f "public/build/manifest.json" ]; then
+        echo "Manifest already exists in build directory"
+    else
+        echo "Error: No manifest.json found"
+        exit 1
+    fi
+fi
+
+# Verify manifest exists
+if [ -f "public/build/manifest.json" ]; then
+    echo "Manifest exists at public/build/manifest.json"
+    ls -la public/build/manifest.json
+else
+    echo "Error: manifest.json still missing after copy attempt"
+    exit 1
 fi
 
 # 5. Clear and cache Laravel configurations

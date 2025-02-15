@@ -44,6 +44,11 @@ export default defineConfig(({ command, mode }) => {
                     assetFileNames: '[ext]/[name]-[hash].[ext]'
                 }
             }
-        }
+        },
+        experimental: {
+            renderBuiltUrl(filename, { hostType }) {
+                return `/${filename}`;
+            },
+        },
     };
 });
