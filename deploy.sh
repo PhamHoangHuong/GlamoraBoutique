@@ -29,17 +29,23 @@ echo "Using Node.js version: $NODE_VERSION"
 
 echo "Installing Node.js dependencies..."
 rm -rf node_modules
-# Chỉ xóa yarn.lock nếu cài đặt thất bại
-if ! yarn install --frozen-lockfile; then
+rm -f package-lock.json
+
+# Cài đặt vite globally
+echo "Installing vite globally..."
+yarn global add vite
+
+# Cài đặt dependencies với platform override
+if ! ESBUILD_BINARY_PATH="/opt/node/bin/esbuild" yarn install --frozen-lockfile; then
     echo "Installation failed with frozen lockfile, trying without..."
     rm -f yarn.lock
-    yarn install --force --network-timeout 100000
+    ESBUILD_BINARY_PATH="/opt/node/bin/esbuild" yarn install --force --network-timeout 100000
 fi
 
 echo "Building frontend assets..."
 export NODE_OPTIONS="--max-old-space-size=128"
-# Sử dụng đường dẫn đầy đủ đến vite
-yarn vite build
+# Sử dụng đường dẫn đầy đủ
+ESBUILD_BINARY_PATH="/opt/node/bin/esbuild" $(yarn global bin)/vite build
 
 # Ensure build directory exists and has correct permissions
 mkdir -p public/build
