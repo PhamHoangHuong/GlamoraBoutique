@@ -36,12 +36,14 @@ export default defineConfig(({ command, mode }) => {
             manifest: true,
             outDir: 'public/build',
             assetsDir: '',
+            minify: true,
+            sourcemap: false,
             rollupOptions: {
                 output: {
                     manualChunks: undefined,
-                    chunkFileNames: 'js/[name]-[hash].js',
-                    entryFileNames: 'js/[name]-[hash].js',
-                    assetFileNames: '[ext]/[name]-[hash].[ext]'
+                    chunkFileNames: 'js/[name].js',
+                    entryFileNames: 'js/[name].js',
+                    assetFileNames: '[ext]/[name].[ext]'
                 }
             }
         },
