@@ -4,5 +4,6 @@
     "Attributes": true,
     "GroupCustomer": true,
     "Customer": true,
-    "Sources": true
+    "Sources": true,
+    "CatalogPriceRules": true
 }
