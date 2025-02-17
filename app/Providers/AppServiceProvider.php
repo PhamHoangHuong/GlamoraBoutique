@@ -5,16 +5,18 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Modules\CatalogPriceRules\Repositories\CatalogPriceRulesRepository;
+use Modules\CatalogPriceRules\Repositories\CatalogPriceRulesRepositoryInterface;
 use Modules\Customer\Repositories\CustomerRepository;
 use Modules\Customer\Repositories\CustomerRepositoryInterface;
 use Modules\Attributes\Repositories\AttributesRepository;
 use Modules\Attributes\Repositories\AttributesRepositoryInterface;
-use Modules\Attributes\Repositories\SourceProductsRepository;
-use Modules\Attributes\Repositories\SourceProductsRepositoryInterface;
-use Modules\Attributes\Repositories\SourcesRepository;
-use Modules\Attributes\Repositories\SourcesRepositoryInterface;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepository;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepositoryInterface;
+use Modules\Sources\Repositories\SourceProductsRepository;
+use Modules\Sources\Repositories\SourceProductsRepositoryInterface;
+use Modules\Sources\Repositories\SourcesRepository;
+use Modules\Sources\Repositories\SourcesRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,17 +48,23 @@ class AppServiceProvider extends ServiceProvider
             AttributesRepository::class
         );
 
-        // //Sources
-        // $this->app->singleton(
-        //     SourcesRepositoryInterface::class,
-        //     SourcesRepository::class
-        // );
+         //Sources
+         $this->app->singleton(
+             SourcesRepositoryInterface::class,
+             SourcesRepository::class
+         );
 
-        // //SourceProducts
-        // $this->app->singleton(
-        //     SourceProductsRepositoryInterface::class,
-        //     SourceProductsRepository::class
-        // );
+         //SourceProducts
+         $this->app->singleton(
+             SourceProductsRepositoryInterface::class,
+             SourceProductsRepository::class
+         );
+
+         //CatalogPriceRules
+            $this->app->singleton(
+                CatalogPriceRulesRepositoryInterface::class,
+                CatalogPriceRulesRepository::class
+            );
     }
 
     /**

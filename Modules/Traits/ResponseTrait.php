@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 trait ResponseTrait
 {
-
+//    #TODO: integrate this trait into all controller
     // thông báo khi thực hiện thành công và trả về dữ liệu || HTTP_OK là mã 200 -> thành công
     public function toResponseSuccess($data, $message = 'Thành công', $status = Response::HTTP_OK)
     {
