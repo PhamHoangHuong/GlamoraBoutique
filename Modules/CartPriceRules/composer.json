@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/cartpricerules",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\CartPriceRules\\": "app/",
+            "Modules\\CartPriceRules\\Database\\Factories\\": "database/factories/",
+            "Modules\\CartPriceRules\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\CartPriceRules\\Tests\\": "tests/"
+        }
+    }
+}
