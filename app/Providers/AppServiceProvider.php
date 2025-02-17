@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Modules\CartPriceRules\Repositories\CartPriceRulesRepository;
+use Modules\CartPriceRules\Repositories\CartPriceRulesRepositoryInterface;
 use Modules\CatalogPriceRules\Repositories\CatalogPriceRulesRepository;
 use Modules\CatalogPriceRules\Repositories\CatalogPriceRulesRepositoryInterface;
 use Modules\Customer\Repositories\CustomerRepository;
@@ -48,23 +50,29 @@ class AppServiceProvider extends ServiceProvider
             AttributesRepository::class
         );
 
-         //Sources
-         $this->app->singleton(
-             SourcesRepositoryInterface::class,
-             SourcesRepository::class
-         );
+        //Sources
+        $this->app->singleton(
+            SourcesRepositoryInterface::class,
+            SourcesRepository::class
+        );
 
-         //SourceProducts
-         $this->app->singleton(
-             SourceProductsRepositoryInterface::class,
-             SourceProductsRepository::class
-         );
+        //SourceProducts
+        $this->app->singleton(
+            SourceProductsRepositoryInterface::class,
+            SourceProductsRepository::class
+        );
 
-         //CatalogPriceRules
-            $this->app->singleton(
-                CatalogPriceRulesRepositoryInterface::class,
-                CatalogPriceRulesRepository::class
-            );
+        //CatalogPriceRules
+        $this->app->singleton(
+            CatalogPriceRulesRepositoryInterface::class,
+            CatalogPriceRulesRepository::class
+        );
+
+        //CartPriceRules
+        $this->app->singleton(
+            CartPriceRulesRepositoryInterface::class,
+            CartPriceRulesRepository::class
+        );
     }
 
     /**
