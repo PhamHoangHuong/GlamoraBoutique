@@ -1,0 +1,11 @@
+{
+    "name": "CartPriceRules",
+    "alias": "cartpricerules",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\CartPriceRules\\Providers\\CartPriceRulesServiceProvider"
+    ],
+    "files": []
+}
