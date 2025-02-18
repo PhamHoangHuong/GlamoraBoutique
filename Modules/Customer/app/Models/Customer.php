@@ -2,12 +2,17 @@
 
 namespace Modules\Customer\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Observers\CustomerObserver;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User;
 use Modules\GroupCustomer\Models\GroupCustomer;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class Customer extends User
+#[ObservedBy([CustomerObserver::class])]
+
+class Customer extends Authenticatable implements JWTSubject
 {
     use HasFactory,SoftDeletes;
 
@@ -23,6 +28,17 @@ class Customer extends User
         'point',
         'status',
     ];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
     protected static function newFactory()
     {
         // return \Modules\Customer\Database\factories\CustomerFactory::new();
