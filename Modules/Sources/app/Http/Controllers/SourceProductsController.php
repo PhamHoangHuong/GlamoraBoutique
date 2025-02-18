@@ -7,7 +7,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Modules\Attributes\Repositories\SourceProductsRepositoryInterface;
+use Modules\Sources\Repositories\SourceProductsRepositoryInterface;
 use Modules\Sources\Http\Requests\StoreSourceProductsRequest;
 use Modules\Sources\Http\Requests\UpdateSourceProductsRequest;
 use Modules\Sources\Transformers\SourceProductsResource;
