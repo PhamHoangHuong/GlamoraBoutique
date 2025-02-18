@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Modules\Customer\Http\Controllers\CustomerController;
 use Modules\Customer\Http\Controllers\AuthCustommerController;
+use Modules\Customer\Http\Controllers\ForgotPasswordController;
 
 /*
  *--------------------------------------------------------------------------
@@ -30,6 +31,8 @@ Route::group(['prefix' => 'v1/customers'], function () {
     Route::middleware([RedirectIfAuthenticated::class . ':customer'])->group(function () {
         Route::post('login', [AuthCustommerController::class, 'login']);
         Route::post('register', [AuthCustommerController::class, 'register']);
+        Route::post('reset-password', [ForgotPasswordController::class, 'sendResetLink']);
+
     });
 
     // Các API yêu cầu token để truy cập

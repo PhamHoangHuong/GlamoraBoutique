@@ -2,10 +2,10 @@
 
 namespace Modules\Customer\Http\Controllers;
 
-use Illuminate\Routing\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Customer\Models\Customer;
-use Modules\Auth\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\Auth\BaseAuthController;
 use Illuminate\Support\Facades\Hash as FacadesHash;
 use Modules\Customer\Http\Requests\StoreCustomerRequest;
@@ -25,4 +25,5 @@ class AuthCustommerController extends BaseAuthController
 
             return $this->respondWithToken($token);
     }
+
 }

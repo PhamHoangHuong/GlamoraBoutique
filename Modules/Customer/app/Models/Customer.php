@@ -4,17 +4,20 @@ namespace Modules\Customer\Models;
 
 use App\Observers\CustomerObserver;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 use Modules\GroupCustomer\Models\GroupCustomer;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 #[ObservedBy([CustomerObserver::class])]
 
-class Customer extends Authenticatable implements JWTSubject
+class Customer extends Authenticatable implements JWTSubject, CanResetPassword
 {
-    use HasFactory,SoftDeletes;
+    use Notifiable, HasFactory, SoftDeletes, CanResetPasswordTrait;
 
     protected $guarded = [];
     protected $table = 'customer';
@@ -48,4 +51,6 @@ class Customer extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(GroupCustomer::class);
     }
+
+
 }
