@@ -1,6 +1,8 @@
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import MainLayout from '@/Layouts/MainLayout';
+import { Link } from '@inertiajs/react';
+
 
 interface ProductImage {
     id: number;
@@ -303,6 +305,75 @@ export default function Show({ id }: Props) {
                         </div>
                     </div>
                 </div>
+
+                {/* Similar Products */}
+                <section className="featured-products">
+                    <div className="container">
+                        <h2 className="section-title">Sản phẩm tương tự</h2>
+                        <div className="products-grid">
+                            {[
+                                {
+                                    id: 1,
+                                    name: 'Áo Polo Premium',
+                                    price: '399.000đ',
+                                    originalPrice: '499.000đ',
+                                    image: 'https://placehold.co/600x400/2C5282/FFFFFF/png?text=Áo+Polo+Premium',
+                                    isNew: true,
+                                    isSale: true
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Áo Polo Basic',
+                                    price: '299.000đ',
+                                    image: 'https://placehold.co/600x400/2C5282/FFFFFF/png?text=Áo+Polo+Basic'
+                                },
+                                {
+                                    id: 3,
+                                    name: 'Áo Polo Sport',
+                                    price: '359.000đ',
+                                    image: 'https://placehold.co/600x400/2C5282/FFFFFF/png?text=Áo+Polo+Sport'
+                                },
+                                {
+                                    id: 4,
+                                    name: 'Áo Polo Vintage',
+                                    price: '379.000đ',
+                                    originalPrice: '459.000đ',
+                                    image: 'https://placehold.co/600x400/2C5282/FFFFFF/png?text=Áo+Polo+Vintage',
+                                    isSale: true
+                                },
+                            ].map(product => (
+                                <div key={product.id} className="product-card">
+                                    <div className="product-image">
+                                        <img src={product.image} alt={product.name} />
+                                        <div className="product-tags">
+                                            {product.isNew && <span className="new">Mới</span>}
+                                            {product.isSale && <span className="sale">Giảm giá</span>}
+                                        </div>
+                                    </div>
+                                    <div className="product-info">
+                                        <Link href={`/products/${product.id}`} className="product-name">
+                                            {product.name}
+                                        </Link>
+                                        <div className="product-price">
+                                            {product.originalPrice && (
+                                                <span className="original-price">{product.originalPrice}</span>
+                                            )}
+                                            <span>{product.price}</span>
+                                        </div>
+                                        <div className="product-actions">
+                                            <button className="btn btn-outline">
+                                                <i className="far fa-heart"></i>
+                                            </button>
+                                            <button className="btn btn-primary">
+                                                Thêm vào giỏ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
             </div>
         </MainLayout>
     );
