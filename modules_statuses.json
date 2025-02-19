@@ -6,5 +6,6 @@
     "Customer": true,
     "Sources": true,
     "CatalogPriceRules": true,
-    "CartPriceRules": true
+    "CartPriceRules": true,
+    "Categories": true
 }
