@@ -209,6 +209,12 @@ export default function Show({ id }: Props) {
                             >
                                 Thông số kỹ thuật
                             </button>
+                            <button
+                                className={`tab-btn ${activeTab === 'reviews' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('reviews')}
+                            >
+                                Đánh giá
+                            </button>
                         </div>
 
                         <div className="tab-content">
@@ -230,6 +236,68 @@ export default function Show({ id }: Props) {
                                             ))}
                                         </tbody>
                                     </table>
+                                </div>
+                            )}
+
+                            {activeTab === 'reviews' && (
+                                <div className="reviews-content">
+                                    <div className="review-item">
+                                        <div className="review-header">
+                                            <div className="reviewer-info">
+                                                {/* <div className="avatar">
+                                                    <img 
+                                                        src="https://placehold.co/40x40/2C5282/FFFFFF/png?text=A" 
+                                                        alt="Avatar"
+                                                        className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 hover:border-blue-500 transition-all duration-300"
+                                                    />
+                                                </div> */}
+                                                <div className="reviewer-details">
+                                                    <span className="reviewer-name">Nguyễn Văn A</span>
+                                                    <div className="rating">
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span className="review-date">20/03/2024</span>
+                                        </div>
+                                        <div className="review-content">
+                                            <p>Sản phẩm rất tốt, chất liệu vải mềm mại và thoáng mát. 
+                                            Form áo vừa vặn, đúng size. Rất hài lòng với sản phẩm này!</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="review-item mt-4 border-t pt-4">
+                                        <div className="review-header">
+                                            <div className="reviewer-info">
+                                                {/* <div className="avatar">
+                                                    <img 
+                                                        src="https://placehold.co/40x40/2C5282/FFFFFF/png?text=B" 
+                                                        alt="Avatar"
+                                                        className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 hover:border-blue-500 transition-all duration-300"
+                                                    />
+                                                </div> */}
+                                                <div className="reviewer-details">
+                                                    <span className="reviewer-name">Trần Thị B</span>
+                                                    <div className="rating">
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="far fa-star"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span className="review-date">19/03/2024</span>
+                                        </div>
+                                        <div className="review-content">
+                                            <p>Áo đẹp, phù hợp với giá tiền. Tuy nhiên size hơi rộng một chút, 
+                                            các bạn nên đặt size nhỏ hơn size thường mặc 1 size.</p>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
                         </div>
