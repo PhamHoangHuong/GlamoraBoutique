@@ -129,7 +129,7 @@ return [
             'notifications' => ['path' => 'app/Notifications', 'generate' => false],
             'observer' => ['path' => 'app/Observers', 'generate' => false],
             'policies' => ['path' => 'app/Policies', 'generate' => false],
-            'resource' => ['path' => 'app/Transformers', 'generate' => false],
+
 
             'rules' => ['path' => 'app/Rules', 'generate' => false],
             'services' => ['path' => 'app/Services', 'generate' => false],
@@ -171,6 +171,9 @@ return [
             // tests/
             'test-feature' => ['path' => 'tests/Feature', 'generate' => true],
             'test-unit' => ['path' => 'tests/Unit', 'generate' => true],
+
+            //Transfomers
+            'resource' => ['path' => 'Transformers', 'generate' => true],
         ],
     ],
 
