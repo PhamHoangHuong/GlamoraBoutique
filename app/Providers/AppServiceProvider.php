@@ -15,6 +15,8 @@ use Modules\Attributes\Repositories\AttributesRepository;
 use Modules\Attributes\Repositories\AttributesRepositoryInterface;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepository;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepositoryInterface;
+use Modules\Product\Repositories\ProductRepository;
+use Modules\Product\Repositories\ProductRepositoryInterface;
 use Modules\Sources\Repositories\SourceProductsRepository;
 use Modules\Sources\Repositories\SourceProductsRepositoryInterface;
 use Modules\Sources\Repositories\SourcesRepository;
@@ -72,6 +74,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             CartPriceRulesRepositoryInterface::class,
             CartPriceRulesRepository::class
+        );
+
+        // Products
+        $this->app->singleton(
+            ProductRepositoryInterface::class,
+            ProductRepository::class
         );
     }
 
