@@ -9,6 +9,8 @@ use Modules\CartPriceRules\Repositories\CartPriceRulesRepository;
 use Modules\CartPriceRules\Repositories\CartPriceRulesRepositoryInterface;
 use Modules\CatalogPriceRules\Repositories\CatalogPriceRulesRepository;
 use Modules\CatalogPriceRules\Repositories\CatalogPriceRulesRepositoryInterface;
+use Modules\Categories\Repositories\CategoriesRepository;
+use Modules\Categories\Repositories\CategoriesRepositoryInterface;
 use Modules\Customer\Repositories\CustomerRepository;
 use Modules\Customer\Repositories\CustomerRepositoryInterface;
 use Modules\Attributes\Repositories\AttributesRepository;
@@ -72,6 +74,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             CartPriceRulesRepositoryInterface::class,
             CartPriceRulesRepository::class
+        );
+
+        //Categories
+        $this->app->singleton(
+            CategoriesRepositoryInterface::class,
+            CategoriesRepository::class
         );
     }
 
