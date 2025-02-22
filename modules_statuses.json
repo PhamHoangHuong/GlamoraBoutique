@@ -1,4 +1,11 @@
 {
     "Auth": true,
-    "Location": true
+    "Location": true,
+    "Attributes": true,
+    "GroupCustomer": true,
+    "Customer": true,
+    "Sources": true,
+    "CatalogPriceRules": true,
+    "CartPriceRules": true,
+    "Categories": true
 }
