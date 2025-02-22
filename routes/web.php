@@ -123,3 +123,8 @@ Route::get('/payment/banking', function () {
     ]);
 })->name('payment.banking');
 
+// Trang Blog
+Route::get('/blog', function () {
+    return Inertia::render('Blog/Index');
+})->name('blog');
+
