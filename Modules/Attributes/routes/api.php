@@ -15,5 +15,7 @@ use Modules\Attributes\Http\Controllers\AttributesController;
  *
 */
 
-Route::apiResource('/v1/attributes', AttributesController::class);
-Route::apiResource('/v1/attribute-values', AttributeValuesController::class);
+Route::prefix('v1')->group(function () {
+    Route::apiResource('attributes', AttributesController::class);
+    Route::apiResource('attribute-values', AttributeValuesController::class);
+});

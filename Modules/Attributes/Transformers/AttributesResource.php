@@ -13,7 +13,7 @@ class AttributesResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'created_at' => $this->created_at,
-            // 'values' => AttributeValuesResource::collection($this->values),
+            'values' => AttributeValuesResource::collection($this->attributeValues),
         ];
     }
 }

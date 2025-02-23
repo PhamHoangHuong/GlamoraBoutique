@@ -10,12 +10,13 @@ class Attributes extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'attributes';
     protected $fillable = ['name', 'description'];
 
     // AttributeValue
     public function attributeValues()
     {
-        return $this->hasMany(AttributeValues::class);
+        return $this->hasMany(AttributeValues::class, 'attribute_id');
     }
 
     // ProductAttributes

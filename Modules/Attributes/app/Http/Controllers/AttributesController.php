@@ -9,6 +9,7 @@ use Modules\Attributes\Http\Requests\StoreAttributesRequest;
 use Modules\Attributes\Http\Requests\UpdateAttributesRequest;
 use Modules\Attributes\Repositories\AttributesRepositoryInterface;
 use Modules\Attributes\Transformers\AttributesResource;
+use Modules\Attributes\Models\Attributes;
 use Symfony\Component\HttpFoundation\Response;
 
 class AttributesController extends Controller

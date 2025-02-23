@@ -38,7 +38,6 @@ class AttributesServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(AttributesRepositoryInterface::class, AttributesRepository::class);
         $this->app->bind(AttributeValuesRepositoryInterface::class, AttributeValuesRepository::class);

@@ -35,6 +35,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/attributes', function () {
         return Inertia::render('Admin/Attributes/Index');
     })->name('attributes');
+
+    Route::get('/attributes/{attribute}/values', function () {
+        return Inertia::render('Admin/Attributes/Values/Index');
+    })->name('admin.attributes.values');
 });
 // Trang Home
 Route::get('/home', function () {
