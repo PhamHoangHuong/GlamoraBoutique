@@ -23,6 +23,11 @@ class Customer extends User
         'point',
         'status',
     ];
+    protected $casts = [
+        'status' => 'integer',
+        'point' => 'integer',
+        'phone' => 'string',
+    ];
     protected static function newFactory()
     {
         // return \Modules\Customer\Database\factories\CustomerFactory::new();

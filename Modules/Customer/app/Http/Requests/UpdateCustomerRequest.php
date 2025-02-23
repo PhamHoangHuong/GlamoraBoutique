@@ -13,15 +13,27 @@ class UpdateCustomerRequest extends FormRequest
      */
     public function rules()
     {
+        $customerId = $this->route('id');
+        
         return [
-            'group_id' => 'sometimes|required|exists:group_customer,id',
-            'name' => 'nullable|string|max:255',
-            'email' => 'sometimes|required|email',
+            'group_id' => 'sometimes|exists:group_customer,id',
+            'fullname' => 'nullable|string|max:255',
+            'email' => 'sometimes|required|email|unique:customer,email,' . $customerId,
+            'phone' => 'sometimes|required|string|regex:/^[0-9]{10,15}$/|unique:customer,phone,' . $customerId,
             'address' => 'nullable|string|max:255',
-            'point' => 'nullable|integer|min:0',
-            'status' => 'integer|in:0,1',
-            'phone' => 'sometimes|required|digits_between:10,15',
             'password' => 'nullable|string|min:8|confirmed',
+            'status' => 'sometimes|in:0,1'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => 'Email đã được sử dụng',
+            'phone.unique' => 'Số điện thoại đã được sử dụng',
+            'phone.regex' => 'Số điện thoại không hợp lệ',
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp'
         ];
     }
 

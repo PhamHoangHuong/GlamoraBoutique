@@ -16,7 +16,7 @@ return new class extends Migration
                 $table->id();
                 $table->unsignedBigInteger('group_id')->comment('Mã Nhóm Khách hàng');
                 $table->string('fullname')->nullable()->comment('Tên khách hàng');
-                $table->integer('phone')->nullable()->comment('Số điện thoại');
+                $table->string('phone')->nullable()->comment('Số điện thoại');
                 $table->string('email')->unique()->comment('Email');
                 $table->string('address')->nullable()->comment('Địa chỉ');
                 $table->integer('point')->nullable()->default(0)->comment('Điểm thành viên');

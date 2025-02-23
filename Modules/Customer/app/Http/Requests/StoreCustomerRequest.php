@@ -16,7 +16,7 @@ class StoreCustomerRequest extends FormRequest
         return [
             'group_id' => 'required|exists:group_customer,id',
             'fullname' => 'nullable|string|max:255',
-            'phone' => 'required|digits_between:10,15|unique:customer,phone',
+            'phone' => 'required|string|regex:/^[0-9]{10,15}$/|unique:customer,phone',
             'email' => 'required|email|unique:customer,email',
             'address' => 'nullable|string|max:255',
             'point' => 'nullable|integer|min:0',
@@ -32,5 +32,12 @@ class StoreCustomerRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function messages()
+    {
+        return [
+            'phone.regex' => 'Số điện thoại không hợp lệ',
+        ];
     }
 }
