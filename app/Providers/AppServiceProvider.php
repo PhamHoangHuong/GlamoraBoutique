@@ -19,8 +19,10 @@ use Modules\Attributes\Repositories\AttributesRepository;
 use Modules\Attributes\Repositories\AttributesRepositoryInterface;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepository;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepositoryInterface;
-use Modules\Product\Repositories\ProductRepository;
-use Modules\Product\Repositories\ProductRepositoryInterface;
+use Modules\Products\Repositories\ProductAttributesRepository;
+use Modules\Products\Repositories\ProductAttributesRepositoryInterface;
+use Modules\Products\Repositories\ProductsRepository;
+use Modules\Products\Repositories\ProductsRepositoryInterface;
 use Modules\Sources\Repositories\SourceProductsRepository;
 use Modules\Sources\Repositories\SourceProductsRepositoryInterface;
 use Modules\Sources\Repositories\SourcesRepository;
@@ -94,8 +96,14 @@ class AppServiceProvider extends ServiceProvider
 
         // Products
         $this->app->singleton(
-            ProductRepositoryInterface::class,
-            ProductRepository::class
+            ProductsRepositoryInterface::class,
+            ProductsRepository::class
+        );
+
+        //ProductsAttributes
+        $this->app->singleton(
+            ProductAttributesRepositoryInterface::class,
+            ProductAttributesRepository::class
         );
     }
 
