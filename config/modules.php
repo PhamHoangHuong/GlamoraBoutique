@@ -129,10 +129,8 @@ return [
             'notifications' => ['path' => 'app/Notifications', 'generate' => false],
             'observer' => ['path' => 'app/Observers', 'generate' => false],
             'policies' => ['path' => 'app/Policies', 'generate' => false],
-            'provider' => ['path' => 'app/Providers', 'generate' => true],
-            'repository' => ['path' => 'app/Repositories', 'generate' => false],
-            'resource' => ['path' => 'app/Transformers', 'generate' => false],
-            'route-provider' => ['path' => 'app/Providers', 'generate' => true],
+
+
             'rules' => ['path' => 'app/Rules', 'generate' => false],
             'services' => ['path' => 'app/Services', 'generate' => false],
             'scopes' => ['path' => 'app/Models/Scopes', 'generate' => false],
@@ -152,6 +150,13 @@ return [
             'migration' => ['path' => 'database/migrations', 'generate' => true],
             'seeder' => ['path' => 'database/seeders', 'generate' => true],
 
+            //Providers/
+            'provider' => ['path' => 'Providers', 'generate' => true],
+            'route-provider' => ['path' => 'Providers', 'generate' => true],
+
+            //Repositories/
+            'repository' => ['path' => 'Repositories', 'generate' => true],
+
             // lang/
             'lang' => ['path' => 'lang', 'generate' => false],
 
@@ -166,6 +171,9 @@ return [
             // tests/
             'test-feature' => ['path' => 'tests/Feature', 'generate' => true],
             'test-unit' => ['path' => 'tests/Unit', 'generate' => true],
+
+            //Transfomers
+            'resource' => ['path' => 'Transformers', 'generate' => true],
         ],
     ],
 

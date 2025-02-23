@@ -73,7 +73,7 @@ class CustomerController extends Controller
                 }
             }
 
-            if (isset($data['phone']) && $data['phone'] !== $customer->phone) {
+            if (isset($data['phone'])) {
                 $existingCustomer = $this->customerRepository->findByPhone($data['phone']);
                 if ($existingCustomer && $existingCustomer->id !== $customer->id) {
                     return $this->toResponseBad('Số điện thoại đã được sử dụng.', Response::HTTP_BAD_REQUEST);

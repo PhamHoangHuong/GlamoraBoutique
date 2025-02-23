@@ -1,14 +1,17 @@
 import React from 'react';
+import Select from 'react-select';
 
 interface FormField {
     name: string;
     label: string;
-    type: 'text' | 'textarea' | 'select' | 'number' | 'email' | 'password' | 'color';
+    type: 'text' | 'textarea' | 'select' | 'number' | 'email' | 'password' | 'color' | 'checkbox';
     value: any;
     options?: { value: string | number; label: string }[];
     required?: boolean;
     placeholder?: string;
     rows?: number;
+    text?: string;
+    isSearchable?: boolean;
 }
 
 interface FormProps {
@@ -55,19 +58,29 @@ export default function Form({
                                 placeholder={field.placeholder}
                             />
                         ) : field.type === 'select' ? (
-                            <select
-                                value={field.value}
-                                onChange={(e) => onChange(field.name, e.target.value)}
-                                className="tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-shadow-sm tw-px-3 tw-py-2"
-                                required={field.required}
-                            >
-                                <option value="">Select {field.label}</option>
-                                {field.options?.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                            <Select
+                                value={field.options?.find(option => option.value === field.value)}
+                                onChange={(option) => onChange(field.name, option?.value || '')}
+                                options={field.options}
+                                className="tw-w-full"
+                                classNamePrefix="select"
+                                isClearable
+                                isSearchable={field.isSearchable !== false}
+                                placeholder={`Chọn ${field.label.toLowerCase()}`}
+                                noOptionsMessage={() => "Không có dữ liệu"}
+                            />
+                        ) : field.type === 'checkbox' ? (
+                            <div className="tw-flex tw-items-center">
+                                <input
+                                    type="checkbox"
+                                    checked={field.value}
+                                    onChange={(e) => onChange(field.name, e.target.checked)}
+                                    className="tw-h-4 tw-w-4 tw-rounded tw-border-gray-300"
+                                />
+                                {field.text && (
+                                    <span className="tw-ml-2 tw-text-sm tw-text-gray-600">{field.text}</span>
+                                )}
+                            </div>
                         ) : (
                             <input
                                 type={field.type}

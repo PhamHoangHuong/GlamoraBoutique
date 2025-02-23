@@ -10,4 +10,6 @@ return [
     Modules\Attributes\Providers\RouteServiceProvider::class,
     Modules\Customer\Providers\CustomerServiceProvider::class,
     Modules\Customer\Providers\RouteServiceProvider::class,
+    Modules\Sources\Providers\SourcesServiceProvider::class,
+    Modules\Sources\Providers\RouteServiceProvider::class,
 ];

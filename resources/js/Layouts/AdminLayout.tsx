@@ -14,10 +14,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     const menuItems: MenuItem[] = [
         { name: 'Dashboard', icon: 'fas fa-chart-line', route: 'admin.dashboard' },
+        { name: 'Customers', icon: 'fas fa-users', route: 'admin.customers' },
         { name: 'Products', icon: 'fas fa-box', route: 'admin.products' },
         { name: 'Attributes', icon: 'fas fa-tags', route: 'admin.attributes' },
         { name: 'Orders', icon: 'fas fa-shopping-cart', route: 'admin.orders' },
-        { name: 'Users', icon: 'fas fa-users', route: 'admin.users' },
+        { name: 'Sources', icon: 'fas fa-store', route: 'admin.sources' },
+        // { name: 'Users', icon: 'fas fa-users', route: 'admin.users' },
         { name: 'Settings', icon: 'fas fa-cog', route: 'admin.settings' },
     ];
 

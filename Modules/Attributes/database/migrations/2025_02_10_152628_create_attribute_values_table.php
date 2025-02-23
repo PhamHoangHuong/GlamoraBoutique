@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('attribute_values', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('attribute_id')->constrained('attributes')->onDelete('cascade');
-            $table->string('value')->nullable();
+            $table->unsignedBigInteger('attribute_id');
+            $table->string('value');
             $table->timestamps();
             $table->softDeletes();
-            $table->index('attribute_id');
+
+            $table->foreign('attribute_id')
+                  ->references('id')
+                  ->on('attributes')
+                  ->onDelete('cascade');
         });
     }
 
@@ -26,11 +30,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //Add drop Index and Foreign key before drop table
         Schema::table('attribute_values', function (Blueprint $table) {
-            $table->dropForeign(['attribute_id']);
+            // Drop foreign key constraint if exists
+            if (Schema::hasColumn('attribute_values', 'attribute_id')) {
+                $table->dropForeign(['attribute_id']);
+            }
         });
-
+        
         Schema::dropIfExists('attribute_values');
     }
 };

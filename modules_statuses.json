@@ -7,5 +7,7 @@
     "Sources": true,
     "CatalogPriceRules": true,
     "CartPriceRules": true,
+    "Categories": true,
+    "Collections": true,
     "Product": true
 }

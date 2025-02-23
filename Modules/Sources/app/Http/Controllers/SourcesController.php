@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Sources\Http\Requests\StoreSourcesRequest;
 use Modules\Sources\Http\Requests\UpdateSourcesRequest;
 use Symfony\Component\HttpFoundation\Response;
-use Modules\Attributes\Repositories\SourcesRepositoryInterface;
+use Modules\Sources\Repositories\SourcesRepositoryInterface;
 use Modules\Sources\Transformers\SourcesResource;
 
 class SourcesController extends Controller

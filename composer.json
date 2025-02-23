@@ -35,8 +35,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "exclude-from-classmap": [
-            "Modules/Auth/Providers/",
-            "Modules/Auth/database/migrations/"
+            "Modules/*/Providers/",
+            "Modules/*/database/migrations/"
         ]
     },
     "autoload-dev": {
