@@ -8,5 +8,6 @@
     "CatalogPriceRules": true,
     "CartPriceRules": true,
     "Categories": true,
-    "Collections": true
+    "Collections": true,
+    "Product": true
 }
