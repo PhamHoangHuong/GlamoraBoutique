@@ -128,3 +128,9 @@ Route::get('/blog', function () {
     return Inertia::render('Blog/Index');
 })->name('blog');
 
+// Trang Chi tiết Blog
+Route::get('/blog/{id}', function ($id) {
+    return Inertia::render('Blog/Show', [
+        'id' => $id
+    ]);
+})->name('blog.show');

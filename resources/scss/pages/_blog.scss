@@ -126,3 +126,40 @@
     }
   }
 } 
+
+// GlamoraBoutique/resources/scss/blog.scss
+
+.blog-detail {
+    background-color: #f9f9f9; // Màu nền nhẹ
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    .container {
+        // max-width: 800px; // Giới hạn chiều rộng
+        margin: 0 auto; // Căn giữa
+    }
+
+    .blog-title {
+        font-size: 2.5rem; // Kích thước tiêu đề lớn hơn
+        color: #333; // Màu chữ tối
+        margin-bottom: 10px;
+    }
+
+    .blog-meta {
+        font-size: 0.9rem; // Kích thước chữ nhỏ hơn
+        color: #777; // Màu chữ nhạt
+        margin-bottom: 20px;
+
+        .author, .date {
+            margin-right: 15px; // Khoảng cách giữa tác giả và ngày
+        }
+    }
+
+    .blog-body {
+        font-size: 1.1rem; // Kích thước chữ nội dung
+        line-height: 1.6; // Khoảng cách dòng
+        color: #444; // Màu chữ tối hơn
+        margin-bottom: 30px;
+    }
+}
