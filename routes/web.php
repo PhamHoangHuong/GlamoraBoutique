@@ -43,6 +43,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/customers', function () {
         return Inertia::render('Admin/Customers/Index');
     })->name('customers');
+
+    Route::get('/sources', function () {
+        return Inertia::render('Admin/Sources/Index');
+    })->name('sources');
 });
 // Trang Home
 Route::get('/home', function () {
