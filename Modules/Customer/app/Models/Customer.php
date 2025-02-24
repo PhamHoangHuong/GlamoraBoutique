@@ -35,6 +35,6 @@ class Customer extends User
 
     public function group()
     {
-        return $this->belongsTo(GroupCustomer::class);
+        return $this->belongsTo(GroupCustomer::class, 'group_id');
     }
 }

@@ -39,10 +39,14 @@ class ProductsController extends Controller
     {
         try {
             $products = $this->productRepository->getPaginated($request);
-            if (empty($products['data'])) {
-                return $this->toResponseBad('Không tìm thấy sản phẩm', Response::HTTP_NOT_FOUND);
+            if ($products->isEmpty()) {
+                return $this->toResponseBad('Không có dữ liệu', Response::HTTP_NOT_FOUND);
             }
-            return $this->toResponseSuccess($products, 'Tìm thấy dữ liệu', Response::HTTP_OK);
+            return $this->toResponseSuccess(
+                $this->formatPaginatedResponse($products, ProductsResource::class),
+                'Danh sách sản phẩm',
+                Response::HTTP_OK
+            );
         } catch (\Exception $e) {
             $message = $e->getMessage();
             return $this->toResponseBad($message, Response::HTTP_INTERNAL_SERVER_ERROR);

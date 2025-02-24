@@ -5,6 +5,8 @@ namespace Modules\Attributes\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Products\Models\ProductAttributes;
+use Modules\Products\Models\Products;
 
 
 class AttributeValues extends Model
@@ -24,14 +26,14 @@ class AttributeValues extends Model
 
 //    TODO: Thêm quan hệ cho bảng product
 
-//    public function productAttributes()
-//    {
-//        return $this->hasMany(ProductAttribute::class);
-//    }
-//
-//    public function products()
-//    {
-//        return $this->belongsToMany(Product::class, 'product_attributes', 'attribute_value_id', 'product_id')
-//            ->withTimestamps();
-//    }
+    public function productAttributes()
+    {
+        return $this->hasMany(ProductAttributes::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Products::class, 'product_attributes', 'attribute_value_id', 'product_id')
+            ->withTimestamps();
+    }
 }
