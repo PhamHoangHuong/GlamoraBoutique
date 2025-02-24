@@ -14,6 +14,6 @@ use Modules\Customer\Http\Controllers\CustomerController;
 |
 */
 
-Route::group([], function () {
-    Route::resource('customer', CustomerController::class)->names('customer');
-});
+//Route::group([], function () {
+//    Route::resource('customer', CustomerController::class)->names('customer');
+//});

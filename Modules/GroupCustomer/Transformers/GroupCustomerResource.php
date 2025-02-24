@@ -9,7 +9,7 @@ class GroupCustomerResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -18,8 +18,7 @@ class GroupCustomerResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'code'=>$this->code,
-            'status'=>$this->status,
-            'point' => $this->point,
+            'status'=>$this->status
         ];
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\GroupCustomer\app\Http\Controllers\GroupCustomerController;
+use Modules\GroupCustomer\Http\Controllers\GroupCustomerController;
 
 /*
  *--------------------------------------------------------------------------
@@ -14,6 +14,11 @@ use Modules\GroupCustomer\app\Http\Controllers\GroupCustomerController;
  *
 */
 
-Route::group(['prefix' => 'v1'], function () {
-    Route::apiResource('group-customer', GroupCustomerController::class);
+Route::group(['prefix' => 'v1/group-customers'], function () {
+    Route::get('/', [GroupCustomerController::class, 'index']);
+    Route::post('/', [GroupCustomerController::class, 'store']);
+    Route::get('/{id}', [GroupCustomerController::class, 'show']);
+    Route::put('/{id}', [GroupCustomerController::class, 'update']);
+    Route::delete('/{id}', [GroupCustomerController::class, 'destroy']);
+    Route::put('group-customers/{id}/active', [GroupCustomerController::class, 'switchStatus']);
 });

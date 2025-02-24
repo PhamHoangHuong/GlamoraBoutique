@@ -14,13 +14,14 @@ class StoreCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'group_id' => 'required|exists:group_customer,id',
+            'group_id' => 'required|exists:group_customers,id',
             'fullname' => 'nullable|string|max:255',
             'phone' => 'required|string|regex:/^[0-9]{10,15}$/|unique:customer,phone',
             'email' => 'required|email|unique:customer,email',
             'address' => 'nullable|string|max:255',
             'point' => 'nullable|integer|min:0',
             'password' => 'required|string|min:8|confirmed',
+            'status' => 'nullable|integer',
         ];
     }
 

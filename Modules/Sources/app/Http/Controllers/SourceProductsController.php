@@ -7,14 +7,20 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 use Modules\Sources\Repositories\SourceProductsRepositoryInterface;
 use Modules\Sources\Http\Requests\StoreSourceProductsRequest;
 use Modules\Sources\Http\Requests\UpdateSourceProductsRequest;
 use Modules\Sources\Transformers\SourceProductsResource;
+use Modules\Traits\ImageUploadTrait;
+use Modules\Traits\PaginatedTrait;
+use Modules\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class SourceProductsController extends Controller
 {
+    use ResponseTrait, ImageUploadTrait, PaginatedTrait;
+
     /**
      * @var SourceProductsRepositoryInterface $sourceProductRepository
      */
@@ -28,12 +34,22 @@ class SourceProductsController extends Controller
         $this->sourceProductRepository = $sourceProductRepository;
     }
 
-    /**
-     * @return AnonymousResourceCollection
-     */
+
     public function index()
     {
-        return SourceProductsResource::collection($this->sourceProductRepository->getAll());
+        try {
+            $sourceProducts = $this->sourceProductRepository->getPaginated(request());
+            if ($sourceProducts->isEmpty()) {
+                return $this->toResponseBad('No data found', Response::HTTP_NOT_FOUND);
+            }
+            return $this->toResponseSuccess(
+                $this->formatPaginatedResponse($sourceProducts, SourceProductsResource::class),
+                'Data found',
+                Response::HTTP_OK);
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            return $this->toResponseBad($message, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -96,6 +112,25 @@ class SourceProductsController extends Controller
             return response()->json(['message' => 'SourceProduct deleted successfully'], Response::HTTP_NO_CONTENT);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to delete SourceProduct: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function switchStatus($id)
+    {
+        DB::BeginTransaction();
+        try {
+            $data = $this->sourceProductRepository->find($id);
+            if (!$data) {
+                return $this->toResponseBad('Không tìm thấy dữ liệu', Response::HTTP_NOT_FOUND);
+            }
+            $status = $data->status == 1 ? 0 : 1;
+            $this->sourceProductRepository->update($id, ['status' => $status]);
+            DB::commit();
+            return $this->toResponseSuccess(null, 'Cập nhật trạng thái dữ liệu thành công', Response::HTTP_OK);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $message = $e->getMessage();
+            return $this->toResponseBad($message, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

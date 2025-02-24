@@ -14,9 +14,9 @@ class UpdateCustomerRequest extends FormRequest
     public function rules()
     {
         $customerId = $this->route('id');
-        
+
         return [
-            'group_id' => 'sometimes|exists:group_customer,id',
+            'group_id' => 'sometimes|exists:group_customers,id',
             'fullname' => 'nullable|string|max:255',
             'email' => 'sometimes|required|email|unique:customer,email,' . $customerId,
             'phone' => 'sometimes|required|string|regex:/^[0-9]{10,15}$/|unique:customer,phone,' . $customerId,

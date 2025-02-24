@@ -9,12 +9,13 @@ use Modules\Collections\Http\Requests\StoreCollectionsRequest;
 use Modules\Collections\Http\Requests\UpdateCollectionsRequest;
 use Modules\Collections\Repositories\CollectionsRepositoryInterface;
 use Modules\Traits\ImageUploadTrait;
+use Modules\Traits\PaginatedTrait;
 use Modules\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class CollectionsController extends Controller
 {
-    use ResponseTrait, ImageUploadTrait;
+    use ResponseTrait, ImageUploadTrait,PaginatedTrait;
 
     protected $collectionsRepository;
     public function __construct(CollectionsRepositoryInterface $collectionsRepository)
@@ -22,11 +23,11 @@ class CollectionsController extends Controller
         $this->collectionsRepository = $collectionsRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try{
-            $collections = $this->collectionsRepository->getAll();
-            if($collections->isEmpty()) {
+            $collections = $this->collectionsRepository->getPaginated($request);
+            if($collections->isEmpty())  {
                 return $this->toResponseBad('Không tìm thấy dữ liệu',Response::HTTP_NOT_FOUND);
             }
             return $this->toResponseSuccess($collections, 'Tìm thấy dữ liệu', Response::HTTP_OK);

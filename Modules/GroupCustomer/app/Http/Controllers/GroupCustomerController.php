@@ -1,19 +1,21 @@
 <?php
 
-namespace Modules\GroupCustomer\app\Http\Controllers;
+namespace Modules\GroupCustomer\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Modules\GroupCustomer\app\Http\Requests\StoreGroupCustomerRequest;
 use Modules\GroupCustomer\app\Http\Requests\UpdateGroupCustomerRequest;
 use Modules\GroupCustomer\Repositories\GroupCustomerRepositoryInterface;
 use Modules\GroupCustomer\Transformers\GroupCustomerResource;
+use Modules\Traits\PaginatedTrait;
 use Modules\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class GroupCustomerController extends Controller
 {
-    use ResponseTrait;
+    use ResponseTrait, PaginatedTrait;
 
     protected $groupCustomerRepository;
 
@@ -28,20 +30,30 @@ class GroupCustomerController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $listGroup = $this->groupCustomerRepository->getAll();
-        if (!$listGroup) {
-            return $this->toResponseBad('No Data found', Response::HTTP_NO_CONTENT);
+        try {
+            $listGroup = $this->groupCustomerRepository->getPaginated($request);
+            if (!$listGroup) {
+                return $this->toResponseBad('No Data found', Response::HTTP_NO_CONTENT);
+            }
+            return $this->toResponseSuccess(
+                $this->formatPaginatedResponse($listGroup, GroupCustomerResource::class),
+                'List Group Customer',
+                Response::HTTP_OK
+            );
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            return $this->toResponseBad($message, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        return $this->toResponseSuccess(GroupCustomerResource::collection($listGroup));
     }
 
     /**
      * @param StoreGroupCustomerRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreGroupCustomerRequest $request)
+    public
+    function store(StoreGroupCustomerRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -57,7 +69,8 @@ class GroupCustomerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public
+    function show($id)
     {
         try {
             $group = $this->groupCustomerRepository->find($id);
@@ -100,6 +113,26 @@ class GroupCustomerController extends Controller
             return $this->toResponseDeleteSuccess('Group Customer deleted successfully');
         } catch (\Exception $e) {
             return $this->handleException($e);
+        }
+    }
+
+    public function switchStatus($id)
+    {
+        DB::beginTransaction();
+        try {
+            $customer = $this->groupCustomerRepository->find($id);
+            if (!$customer) {
+                return $this->toResponseBad('Dữ liệu không tồn tại.', Response::HTTP_NOT_FOUND);
+            }
+
+            $status = $customer->status == 1 ? 0 : 1;
+            $this->groupCustomerRepository->update($id, ['status' => $status]);
+
+            DB::commit();
+            return $this->toResponseSuccess('Cập nhật trạng thái thành công.', Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $this->toResponseBad('Cập nhật trạng thái thất bại.', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

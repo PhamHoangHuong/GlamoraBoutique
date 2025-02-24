@@ -20,7 +20,7 @@ class ProductsRepository extends BaseRepository implements ProductsRepositoryInt
         return Products::class;
     }
 
-    public function getPaginated(Request $request)
+    public function getPaginated($request)
     {
         return $this->customPaginate(Products::query(), $request);
     }

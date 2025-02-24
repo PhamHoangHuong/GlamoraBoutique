@@ -4,15 +4,20 @@ namespace Modules\Attributes\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Modules\Attributes\Http\Requests\StoreAttributeValuesRequest;
 use Modules\Attributes\Http\Requests\UpdateAttributeValuesRequest;
 use Modules\Attributes\Repositories\AttributeValuesRepositoryInterface;
 use Modules\Attributes\Transformers\AttributeValuesResource;
 use Modules\Attributes\Models\AttributeValues;
+use Modules\Traits\PaginatedTrait;
+use Modules\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class AttributeValuesController extends Controller
 {
+    use PaginatedTrait, ResponseTrait;
+
     public function __construct(
         protected AttributeValuesRepositoryInterface $attributeValuesRepository
     )
@@ -23,17 +28,20 @@ class AttributeValuesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $values = $this->attributeValuesRepository->getAll();
-            return response()->json([
-                'data' => AttributeValuesResource::collection($values)
-            ]);
+            $values = $this->attributeValuesRepository->getPaginated($request);
+            if ($values->isEmpty()) {
+                return $this->toResponseBad('Không có giá trị thuộc tính nào được tìm thấy', Response::HTTP_NOT_FOUND);
+            }
+            return $this->toResponseSuccess(
+                $this->formatPaginatedResponse($values, AttributeValuesResource::class),
+                'Danh sách giá trị thuộc tính',
+                Response::HTTP_OK
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Không thể lấy danh sách giá trị thuộc tính'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->toResponseBad($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -45,15 +53,15 @@ class AttributeValuesController extends Controller
         try {
             $validated = $request->validated();
             $value = $this->attributeValuesRepository->create($validated);
-
-            return response()->json([
-                'message' => 'Giá trị thuộc tính đã được tạo thành công',
-                'data' => new AttributeValuesResource($value)
-            ], Response::HTTP_CREATED);
+            return $this->toResponseSuccess(
+                new AttributeValuesResource($value),
+                'Giá trị thuộc tính đã được tạo thành công',
+                Response::HTTP_CREATED
+            );
+        } catch (QueryException $e) {
+            return $this->toResponseBad('Giá trị thuộc tính đã tồn tại', Response::HTTP_CONFLICT);
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Không thể tạo giá trị thuộc tính'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->toResponseBad($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -64,13 +72,16 @@ class AttributeValuesController extends Controller
     {
         try {
             $value = $this->attributeValuesRepository->find($id);
-            return response()->json([
-                'data' => new AttributeValuesResource($value)
-            ]);
+            if (!$value) {
+                return $this->toResponseBad('Không tìm thấy giá trị thuộc tính', Response::HTTP_NOT_FOUND);
+            }
+            return $this->toResponseSuccess(
+                new AttributeValuesResource($value),
+                'Tìm thấy dữ liệu',
+                Response::HTTP_OK
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Không tìm thấy giá trị thuộc tính'
-            ], Response::HTTP_NOT_FOUND);
+            return $this->toResponseBad($e->getMessage(), Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -83,14 +94,13 @@ class AttributeValuesController extends Controller
             $validated = $request->validated();
             $value = $this->attributeValuesRepository->update($id, $validated);
 
-            return response()->json([
-                'message' => 'Giá trị thuộc tính đã được cập nhật thành công',
-                'data' => new AttributeValuesResource($value)
-            ]);
+            return $this->toResponseSuccess(
+                new AttributeValuesResource($value),
+                'Giá trị thuộc tính đã được cập nhật thành công',
+                Response::HTTP_OK
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Không thể cập nhật giá trị thuộc tính'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->toResponseBad($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -101,13 +111,9 @@ class AttributeValuesController extends Controller
     {
         try {
             $this->attributeValuesRepository->delete($id);
-            return response()->json([
-                'message' => 'Giá trị thuộc tính đã được xóa thành công'
-            ], Response::HTTP_NO_CONTENT);
+            return $this->toResponseDeleteSuccess('Xóa giá trị thuộc tính thành công', Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Không thể xóa giá trị thuộc tính'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->toResponseBad($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

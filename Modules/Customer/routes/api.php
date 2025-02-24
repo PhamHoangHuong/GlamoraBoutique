@@ -15,10 +15,10 @@ use Modules\Customer\Http\Controllers\CustomerController;
 */
 
 //Route for admin
-Route::group(['prefix'=>'v1/customers'],function(){
-    Route::get('', [CustomerController::class,'index']);
-    Route::post('', [CustomerController::class,'store']);
-    Route::put('/{id}', [CustomerController::class,'update']);
-    Route::put('/{id}/active', [CustomerController::class,'switchStatus']);
-    Route::delete('/{id}', [CustomerController::class,'destroy']);
+Route::group(['prefix' => 'v1/customers'], function () {
+    Route::get('', [CustomerController::class, 'index']);
+    Route::post('', [CustomerController::class, 'store']);
+    Route::put('/{id}', [CustomerController::class, 'update']);
+    Route::put('/{id}/active', [CustomerController::class, 'switchStatus']);
+    Route::delete('/{id}', [CustomerController::class, 'destroy']);
 });

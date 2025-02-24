@@ -4,19 +4,28 @@ namespace Modules\CartPriceRules\Repositories;
 
 use App\Repositories\BaseRepository;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Modules\CartPriceRules\Models\CartPriceRules;
-use Modules\CatalogPriceRules\Models\CatalogPriceRules;
+use Modules\Traits\PaginatedTrait;
 
-class CartPriceRulesRepository extends  BaseRepository implements  CartPriceRulesRepositoryInterface
+class CartPriceRulesRepository extends BaseRepository implements CartPriceRulesRepositoryInterface
 {
+    use PaginatedTrait;
+
     public function getModel(): string
     {
         return CartPriceRules::class;
     }
+
+    public function getPaginated($request)
+    {
+        return $this->customPaginate(CartPriceRules::query(), $request);
+    }
+
     public function existsByCoupon($coupon, $exceptId = null)
     {
         $query = $this->model->where('coupon', $coupon);
-        if($exceptId){
+        if ($exceptId) {
             $query->where('id', '!=', $exceptId);
         }
         return $query->exists();

@@ -15,5 +15,20 @@ use Modules\Sources\Http\Controllers\SourcesController;
  *
 */
 
-Route::apiResource('/v1/sources', SourcesController::class);
-Route::apiResource('/v1/source-products', SourceProductsController::class);
+Route::group(['prefix' => 'v1/sources'], function () {
+    Route::get('/', [SourcesController::class, 'index']);
+    Route::post('/', [SourcesController::class, 'store']);
+    Route::get('/{id}', [SourcesController::class, 'show']);
+    Route::put('/{id}', [SourcesController::class, 'update']);
+    Route::delete('/{id}', [SourcesController::class, 'destroy']);
+    Route::put('/{id}/active', [SourcesController::class, 'switchStatus']);
+});
+
+Route::group(['prefix' => 'v1/source-products'], function () {
+    Route::get('/', [SourceProductsController::class, 'index']);
+    Route::post('/', [SourceProductsController::class, 'store']);
+    Route::get('/{id}', [SourceProductsController::class, 'show']);
+    Route::put('/{id}', [SourceProductsController::class, 'update']);
+    Route::delete('/{id}', [SourceProductsController::class, 'destroy']);
+    Route::put('/{id}/active', [SourceProductsController::class, 'switchStatus']);
+});
