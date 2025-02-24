@@ -11,7 +11,7 @@ class ProductAttributesResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'attribute' => new AttributesResource($this->whenLoaded('attribute')),
+            'attribute' => new AttributesResource($this->whenLoaded('attributes')),
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace Modules\Products\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Categories\Transformers\CategoriesResource;
+use Modules\Collections\Transformers\CollectionsResource;
 use Modules\Sources\Transformers\SourceProductsResource;
 
 class ProductsResource extends JsonResource
@@ -36,14 +37,14 @@ class ProductsResource extends JsonResource
                         'id' => $productAttribute->id,
                         'attribute_id' => $productAttribute->attribute_id,
                         'attribute_name' => $productAttribute->attribute->name ?? null,
-                        'value_id' => $productAttribute->value_id,
+                        'value_id' => $productAttribute->attribute_value_id,
                         'value' => $productAttribute->attributeValue->value ?? null,
                     ];
                 });
             }),
 //            'advanced_prices' => AdvancedPriceResource::collection($this->whenLoaded('advancedPrices')),
             'categories' => CategoriesResource::collection($this->whenLoaded('categories')),
-            'collections' => ProductCollectionsResource::collection($this->whenLoaded('collections')),
+            'collections' => CollectionsResource::collection($this->whenLoaded('collections')),
             'sourceProducts' => SourceProductsResource::collection($this->whenLoaded('sourceProducts')),
         ];
     }

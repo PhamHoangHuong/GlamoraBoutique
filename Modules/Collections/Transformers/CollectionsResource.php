@@ -3,8 +3,9 @@
 namespace Modules\Collections\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Products\Transformers\ProductsResource;
 
-class CollectionsResrouce extends JsonResource
+class CollectionsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,7 +23,7 @@ class CollectionsResrouce extends JsonResource
             'image' => $this->image,
             'status' => $this->status,
 
-//            'products' => ProductResource::collection($this->whenLoaded('products')),
+            'products' => ProductsResource::collection($this->whenLoaded('products')),
         ];
     }
 }
