@@ -5,6 +5,7 @@ namespace Modules\Collections\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Products\Models\Products;
 
 // use Modules\Collections\Database\Factories\CollectionsFactory;
 
@@ -22,8 +23,8 @@ class Collections extends Model
     ];
 
 
-//    public function products()
-//    {
-//        return $this->belongsToMany(Product::class, 'product_collections', 'collection_id', 'product_id');
-//    }
+    public function products()
+    {
+        return $this->belongsToMany(Products::class, 'product_collections', 'collection_id', 'product_id');
+    }
 }

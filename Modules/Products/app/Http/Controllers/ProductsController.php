@@ -13,13 +13,14 @@ use Modules\Products\Repositories\ProductsRepositoryInterface;
 use Modules\Products\Transformers\ProductsResource;
 use Modules\Sources\Repositories\SourceProductsRepositoryInterface;
 use Modules\Traits\ImageUploadTrait;
+use Modules\Traits\PaginatedTrait;
 use Modules\Traits\ResponseTrait;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductsController extends Controller
 {
-    use ImageUploadTrait, ResponseTrait;
+    use ImageUploadTrait, ResponseTrait, PaginatedTrait;
 
     protected $productRepository, $sourceProductRepository;
 
@@ -34,15 +35,15 @@ class ProductsController extends Controller
     }
 
     // Lấy danh sách tất cả sản phẩm
-    public function index()
+    public function index(Request $request)
     {
-        try{
-            $products = $this->productRepository->getAll();
-            if($products->isEmpty()) {
+        try {
+            $products = $this->productRepository->getPaginated($request);
+            if (empty($products['data'])) {
                 return $this->toResponseBad('Không tìm thấy sản phẩm', Response::HTTP_NOT_FOUND);
             }
-            return $this->toResponseSuccess($categories, 'Tìm thấy dữ liệu', Response::HTTP_OK);
-        }catch (\Exception $e) {
+            return $this->toResponseSuccess($products, 'Tìm thấy dữ liệu', Response::HTTP_OK);
+        } catch (\Exception $e) {
             $message = $e->getMessage();
             return $this->toResponseBad($message, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -116,7 +117,7 @@ class ProductsController extends Controller
     public function show($id)
     {
         try {
-            $data = $this->productRepository->findProduct($id, ['parent', 'variants', 'productAttributes', 'sourceProducts']);
+            $data = $this->productRepository->findProduct($id, ['parent','categories','collections', 'variants', 'productAttributes', 'sourceProducts']);
             if (!$data) {
                 return $this->toResponseBad('Không tìm thấy sản phẩm', Response::HTTP_NOT_FOUND);
             }
@@ -139,13 +140,14 @@ class ProductsController extends Controller
             }
 
             $product = $this->productRepository->updateProduct($id, $productData);
-
             $this->productRepository->updateProductAttributes($product, $request->input('attributes', []));
             //Cập nhật danh mục cho sản phẩm
             $this->productRepository->updateProductCategories($product, $request->input('category_ids', []));
             //Cập nhật bộ sưu tập cho sản phẩm
             $this->productRepository->updateProductCollections($product, $request->input('collection_ids', []));
 
+
+            $product->refresh()->load(['parent','categories', 'collections', 'variants', 'productAttributes', 'sourceProducts']);
             DB::commit();
             return $this->toResponseSuccess('Sản phẩm đã được cập nhật thành công', new ProductsResource($product));
         } catch (\Exception $e) {
@@ -181,6 +183,7 @@ class ProductsController extends Controller
         $product->productAttributes()->delete();
         foreach ($attributes as $attribute) {
             $product->productAttributes()->create([
+                'product_id' => $product->id,
                 'attribute_id' => $attribute['attribute_id'],
                 'attribute_value_id' => $attribute['attribute_value_id'],
             ]);
@@ -193,16 +196,16 @@ class ProductsController extends Controller
     public function switchStatus($id)
     {
         DB::BeginTransaction();
-        try{
+        try {
             $data = $this->productRepository->find($id);
-            if(!$data) {
+            if (!$data) {
                 return $this->toResponseBad('Không tìm thấy sản phẩm', Response::HTTP_NOT_FOUND);
             }
             $status = $data->status == 1 ? 0 : 1;
             $this->productRepository->update($id, ['status' => $status]);
             DB::commit();
             return $this->toResponseSuccess(null, 'Cập nhật trạng thái thành công', Response::HTTP_OK);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             $message = $e->getMessage();
             return $this->toResponseBad($message, Response::HTTP_INTERNAL_SERVER_ERROR);

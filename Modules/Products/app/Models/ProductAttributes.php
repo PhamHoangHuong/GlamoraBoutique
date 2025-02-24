@@ -18,12 +18,12 @@ class ProductAttributes extends Model
 
     public function product()
     {
-        return $this->belongsTo(Products::class);
+        return $this->belongsTo(Products::class, 'product_id');
     }
 
     public function attribute()
     {
-        return $this->belongsTo(Attributes::class);
+        return $this->belongsTo(Attributes::class, 'attribute_id');
     }
 
     public function attributeValue()

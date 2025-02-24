@@ -3,18 +3,26 @@
 namespace Modules\Products\Repositories;
 
 use App\Repositories\BaseRepository;
+use Exception;
+use Modules\Products\Models\ProductAttributes;
 use Modules\Products\Models\Products;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Modules\Traits\ImageUploadTrait;
+use Modules\Traits\PaginatedTrait;
 
 class ProductsRepository extends BaseRepository implements ProductsRepositoryInterface
 {
-    use ImageUploadTrait;
+    use ImageUploadTrait, PaginatedTrait;
 
     public function getModel(): string
     {
         return Products::class;
+    }
+
+    public function getPaginated(Request $request)
+    {
+        return $this->customPaginate(Products::query(), $request);
     }
 
 //    public function findMany(array $ids)
@@ -36,11 +44,12 @@ class ProductsRepository extends BaseRepository implements ProductsRepositoryInt
     public function updateProductAttributes($product, array $attributes)
     {
         // Clear existing attributes for the specific product (main or variant)
-        $product->productAttributes()->delete();
+        $product->productAttributes()->where('product_id', $product->id)->delete();
 
         // Add new attributes for the specific product
         foreach ($attributes as $attribute) {
             $product->productAttributes()->create([
+                'product_id' => $product->id,
                 'attribute_id' => $attribute['attribute_id'],
                 'attribute_value_id' => $attribute['attribute_value_id'],
             ]);
@@ -72,9 +81,16 @@ class ProductsRepository extends BaseRepository implements ProductsRepositoryInt
     public function deleteProduct($id)
     {
         $product = $this->model->findOrFail($id);
+        $product->productCategories()->delete();
+        $product->productCollections()->delete();
+        $product->productAttributes()->delete();
+        $product->sourceProducts()->delete();
         $product->delete();
     }
 
+    /**
+     * @throws Exception
+     */
     public function prepareProductData(Request $request, $id = null)
     {
         $productData = $request->validated();
@@ -84,7 +100,7 @@ class ProductsRepository extends BaseRepository implements ProductsRepositoryInt
         $productData['slug'] = Str::slug($request->name);
 
         if ($id && $this->existsBySlug($productData['slug'], $id)) {
-            throw new \Exception('Slug đã tồn tại');
+            throw new Exception('Slug đã tồn tại');
         }
 
         return $productData;

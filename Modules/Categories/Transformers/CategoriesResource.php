@@ -3,6 +3,7 @@
 namespace Modules\Categories\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Products\Transformers\ProductsResource;
 
 class CategoriesResource extends JsonResource
 {
@@ -17,7 +18,7 @@ class CategoriesResource extends JsonResource
             'image' => $this->image,
             'status' => $this->status,
 
-//            'products' => ProductResource::collection($this->whenLoaded('products')),
+            'products' => ProductsResource::collection($this->whenLoaded('products')),
         ];
     }
 }

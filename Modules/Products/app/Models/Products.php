@@ -18,6 +18,7 @@ class Products extends Model
 {
     use HasFactory, SoftDeletes;
 
+
     protected $fillable = [
         'name',
         'slug',
@@ -74,19 +75,19 @@ class Products extends Model
 
     public function sources()
     {
-        return $this->belongsToMany(Sources::class, 'source_products')
+        return $this->belongsToMany(Sources::class, 'source_products', 'product_id', 'source_id')
             ->withPivot('quantity')
             ->withTimestamps();
     }
 
     public function sourceProducts()
     {
-        return $this->hasMany(SourceProducts::class);
+        return $this->hasMany(SourceProducts::class,'product_id');
     }
 
     public function productAttributes()
     {
-        return $this->hasMany(ProductAttributes::class);
+        return $this->hasMany(ProductAttributes::class, 'product_id');
     }
 
     public function categories()
@@ -94,10 +95,18 @@ class Products extends Model
         return $this->belongsToMany(Categories::class, 'product_categories', 'product_id', 'category_id')
             ->withTimestamps();
     }
+    public function productCategories()
+    {
+        return $this->hasMany(ProductCategories::class, 'product_id');
+    }
 
-    public  function  collections()
+    public function collections()
     {
         return $this->belongsToMany(Collections::class, 'product_collections', 'product_id', 'collection_id')
             ->withTimestamps();
+    }
+    public function productCollections()
+    {
+        return $this->hasMany(ProductCollections::class, 'product_id');
     }
 }

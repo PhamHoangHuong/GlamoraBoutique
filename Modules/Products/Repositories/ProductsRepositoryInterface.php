@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 interface ProductsRepositoryInterface extends RepositoryInterface
 {
 //    public function findMany(array $ids);
+    public function getPaginated(Request $request);
     public function getSourceContainProduct($product_id);
     public function updateProductAttributes($product, array $attributes);
     public function updateProductCategories($product, array $categoryIds);

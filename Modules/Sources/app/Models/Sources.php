@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Location\Models\District;
 use Modules\Location\Models\Province;
 use Modules\Location\Models\Ward;
+use Modules\Products\Models\Products;
 
 // use Modules\Sources\Database\Factories\SourcesFactory;
 
 class Sources extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -43,10 +44,10 @@ class Sources extends Model
         return $this->belongsTo(Ward::class, 'ward_id', 'code');
     }
 
-//    public function products()
-//    {
-//        return $this->belongsToMany(Products::class, 'source_products')
-//            ->withPivot('quantity', 'status')
-//            ->withTimestamps();
-//    }
+    public function products()
+    {
+        return $this->belongsToMany(Products::class, 'source_products', 'source_id', 'product_id')
+            ->withPivot('quantity', 'status')
+            ->withTimestamps();
+    }
 }
