@@ -25,7 +25,7 @@ class StoreCategoriesRequest extends FormRequest
             'parent_id'=>[
                 'nullable',
                 'integer',
-                Rule::exists('categories','id')->whereNull('parent_id')
+                Rule::exists('categories','id')
             ],
             'description'=>'nullable|string',
             'image'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
