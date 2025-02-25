@@ -6,5 +6,5 @@ use App\Repositories\RepositoryInterface;
 
 interface SourcesRepositoryInterface extends RepositoryInterface
 {
-
+    public function getPaginated($request);
 }

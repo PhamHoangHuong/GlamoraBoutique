@@ -10,12 +10,13 @@ use Modules\Categories\Http\Requests\StoreCategoriesRequest;
 use Modules\Categories\Http\Requests\UpdateCategoriesRequest;
 use Modules\Categories\Repositories\CategoriesRepositoryInterface;
 use Modules\Traits\ImageUploadTrait;
+use Modules\Traits\PaginatedTrait;
 use Modules\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoriesController extends Controller
 {
-    use ResponseTrait, ImageUploadTrait;
+    use ResponseTrait, ImageUploadTrait,PaginatedTrait;
 
     protected $categoriesRepository;
 
@@ -24,11 +25,11 @@ class CategoriesController extends Controller
         $this->categoriesRepository = $categoriesRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $categories = $this->categoriesRepository->getAll();
-            if ($categories->isEmpty()) {
+            $categories = $this->categoriesRepository->getPaginated($request);
+            if (empty($categories['data'])) {
                 return $this->toResponseBad('Không tìm thấy dữ liệu', Response::HTTP_NOT_FOUND);
             }
             return $this->toResponseSuccess($categories, 'Tìm thấy dữ liệu', Response::HTTP_OK);

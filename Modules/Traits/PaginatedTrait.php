@@ -14,7 +14,7 @@ trait PaginatedTrait
      * @param Builder $query
      * @param Request $request
      * @param int $defaultPerPage
-     * @return array
+     * @return LengthAwarePaginator
      */
     public function customPaginate(Builder $query, Request $request, $defaultPerPage = 20)
     {
@@ -27,28 +27,28 @@ trait PaginatedTrait
             $query->where($column, 'LIKE', "%$value%");
         }
         $query->orderBy($sortBy, $sortDirection);
-        $total = $query->count();
-        $lastPage = ceil($total / $defaultPerPage);
-        $page = min($page, $lastPage);
-        $results = $query->skip(($page - 1) * $defaultPerPage)
-            ->take($defaultPerPage)
-            ->get();
 
+        return $query->paginate($defaultPerPage, ['*'], 'page', $page);
+    }
+
+    /**
+     * Format paginated response.
+     *
+     * @param LengthAwarePaginator $paginator
+     * @param $resourceClass
+     * @return array
+     */
+    public function formatPaginatedResponse(LengthAwarePaginator $paginator, $resourceClass)
+    {
         return [
-            'data' => $results,
+            'data' => $resourceClass::collection($paginator->items()),
             'pagination' => [
-                'current_page' => $page,
-                'per_page' => $defaultPerPage,
-                'total' => $total,
-                'last_page' => $lastPage,
-                'prev_page' => $page > 1 ? $page - 1 : null,
-                'next_page' => $page < $lastPage ? $page + 1 : null,
-                'links' => [
-                    'first' => 1,
-                    'prev' => $page > 1 ? $page - 1 : null,
-                    'next' => $page < $lastPage ? $page + 1 : null,
-                    'last' => $lastPage,
-                ]
+                'current_page' => $paginator->currentPage(),
+                'per_page' => $paginator->perPage(),
+                'total' => $paginator->total(),
+                'last_page' => $paginator->lastPage(),
+                'prev_page' => $paginator->previousPageUrl(),
+                'next_page' => $paginator->nextPageUrl(),
             ]
         ];
     }

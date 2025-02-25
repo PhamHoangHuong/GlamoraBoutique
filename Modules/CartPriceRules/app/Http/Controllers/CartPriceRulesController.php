@@ -9,12 +9,13 @@ use Modules\CartPriceRules\Http\Requests\StoreCartPriceRulesRequest;
 use Modules\CartPriceRules\Http\Requests\UpdateCartPriceRulesRequest;
 use Modules\CartPriceRules\Repositories\CartPriceRulesRepositoryInterface;
 use Modules\CartPriceRules\Transformers\CartPriceRulesResource;
+use Modules\Traits\PaginatedTrait;
 use Modules\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class CartPriceRulesController extends Controller
 {
-    use ResponseTrait;
+    use ResponseTrait, PaginatedTrait;
 
     protected $cartPriceRulesRepository;
 
@@ -24,20 +25,26 @@ class CartPriceRulesController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $salesRules = $this->cartPriceRulesRepository->getAll();
-
-        if ($salesRules->isEmpty()) {
-            return $this->toResponseBad('Không có dữ liệu', Response::HTTP_NO_CONTENT);
+        try {
+            $cartPriceRule = $this->cartPriceRulesRepository->getPaginated($request);
+            if ($cartPriceRule->isEmpty()) {
+                return $this->toResponseBad('Không có dữ liệu', Response::HTTP_NOT_FOUND);
+            }
+            return $this->toResponseSuccess(
+                $this->formatPaginatedResponse($cartPriceRule, CartPriceRulesResource::class),
+                'Danh sách chương trình khuyến mãi',
+                Response::HTTP_OK);
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            return $this->toResponseBad($message, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return $this->toResponseSuccess(CartPriceRulesResource::collection($salesRules), 'Danh sách chương trình khuyến mãi', Response::HTTP_OK);
     }
 
     public function show($id)
     {
-        try{
+        try {
             $salesRules = $this->cartPriceRulesRepository->find($id);
 
             if (!$salesRules) {
@@ -49,7 +56,6 @@ class CartPriceRulesController extends Controller
             return $this->handleException($e);
         }
     }
-
 
 
     public function store(StoreCartPriceRulesRequest $request)

@@ -38,7 +38,6 @@ trait ResponseTrait
             'error' => $message
         ], $status);
     }
-
     // thông báo khi có lỗi xảy ra và ghi log lỗi cho dễ theo dõi || rollback lại các thay đổi trong database
     public function handleException(\Exception $e)
     {

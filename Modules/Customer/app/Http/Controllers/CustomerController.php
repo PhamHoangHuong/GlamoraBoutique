@@ -2,18 +2,21 @@
 
 namespace Modules\Customer\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Modules\Customer\Http\Requests\StoreCustomerRequest;
 use Modules\Customer\Http\Requests\UpdateCustomerRequest;
 use Modules\Customer\Repositories\CustomerRepositoryInterface;
-use Modules\GroupCustomer\app\Http\Requests\UpdateGroupCustomerRequest;
+use Modules\Customer\Transformers\CustomerResource;
+use Modules\Traits\PaginatedTrait;
 use Modules\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class CustomerController extends Controller
 {
-    use ResponseTrait;
+    use ResponseTrait, PaginatedTrait;
+
     protected $customerRepository;
 
     public function __construct(CustomerRepositoryInterface $customerRepository)
@@ -21,14 +24,19 @@ class CustomerController extends Controller
         $this->customerRepository = $customerRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $customers = $this->customerRepository->getAll(['id', 'fullname', 'email', 'phone', 'address', 'status']);
-
-        if ($customers->isEmpty()) {
-            return $this->toResponseBad('Không tìm thấy dữ liệu.', Response::HTTP_NOT_FOUND);
+        try {
+            $customers = $this->customerRepository->getPaginated($request);
+            if ($customers->isEmpty()) {
+                return $this->toResponseBad('Không tìm thấy dữ liệu.', Response::HTTP_NOT_FOUND);
+            }
+            return $this->toResponseSuccess(
+                $this->formatPaginatedResponse($customers, CustomerResource::class), 'Danh sách khách hàng', Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->toResponseBad('Lấy dữ liệu thất bại.', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        return $this->toResponseSuccess($customers, Response::HTTP_OK);
+
     }
 
 
@@ -43,7 +51,7 @@ class CustomerController extends Controller
             }
 
             $data['password'] = bcrypt($request->password);
-            $customer = $this->customerRepository->create($data);
+            $this->customerRepository->create($data);
             DB::commit();
             return $this->toResponseSuccess('Thêm mới khách hàng thành công.', Response::HTTP_OK);
         } catch (\Exception $exception) {
@@ -51,8 +59,6 @@ class CustomerController extends Controller
             return $this->toResponseBad('Thêm mới khách hàng thất bại.', $exception->getMessage());
         }
     }
-
-
 
 
     public function update(UpdateCustomerRequest $request, $id)

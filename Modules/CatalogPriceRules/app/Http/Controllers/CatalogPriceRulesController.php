@@ -9,12 +9,13 @@ use Modules\CatalogPriceRules\Http\Requests\StoreCatalogPriceRulesRequest;
 use Modules\CatalogPriceRules\Http\Requests\UpdateCatalogPriceRulesRequest;
 use Modules\CatalogPriceRules\Repositories\CatalogPriceRulesRepositoryInterface;
 use Modules\CatalogPriceRules\Transformers\CatalogPriceRulesResource;
+use Modules\Traits\PaginatedTrait;
 use Modules\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class CatalogPriceRulesController extends Controller
 {
-    use ResponseTrait;
+    use ResponseTrait, PaginatedTrait;
 
     /**
      * @var CatalogPriceRulesRepositoryInterface
@@ -32,13 +33,22 @@ class CatalogPriceRulesController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $catalogPriceRules = $this->catalogPriceRulesRepository->getAll();
-        if ($catalogPriceRules->isEmpty()) {
-            return $this->toResponseBad('Không có dữ liệu', Response::HTTP_NO_CONTENT);
+        try {
+            $catalogPriceRules = $this->catalogPriceRulesRepository->getPaginated($request);
+            if ($catalogPriceRules->isEmpty()) {
+                return $this->toResponseBad('Không có dữ liệu', Response::HTTP_NOT_FOUND);
+            }
+            return $this->toResponseSuccess(
+                $this->formatPaginatedResponse($catalogPriceRules, CatalogPriceRulesResource::class),
+                'Danh sách chương trình khuyến mãi',
+                Response::HTTP_OK);
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            return $this->toResponseBad($message, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        return $this->toResponseSuccess($catalogPriceRules, 'Danh sách chương trình khuyến mãi', Response::HTTP_OK);
+
     }
 
     /**
