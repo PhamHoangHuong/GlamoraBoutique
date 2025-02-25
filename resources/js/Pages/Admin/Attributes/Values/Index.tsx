@@ -28,9 +28,13 @@ export default function AttributeValues() {
 
     // Search and Pagination states
     const [searchTerm, setSearchTerm] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
+    const [pagination, setPagination] = useState({
+        currentPage: 1,
+        perPage: 20,
+        total: 0,
+        lastPage: 1
+    });
     const [filteredValues, setFilteredValues] = useState<AttributeValue[]>([]);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
 
     const fetchAttributes = async () => {
         try {
@@ -42,11 +46,17 @@ export default function AttributeValues() {
         }
     };
 
-    const fetchValues = async () => {
+    const fetchValues = async (page: number = 1, perPage: number = pagination.perPage) => {
         try {
             setLoading(true);
-            const response = await attributesService.getAllAttributeValues();
-            setValues(response.data.data);
+            const response = await attributesService.getAllAttributeValues(page, perPage);
+            setValues(response.data.data.data);
+            setPagination({
+                currentPage: response.data.data.pagination.current_page,
+                perPage: response.data.data.pagination.per_page,
+                total: response.data.data.pagination.total,
+                lastPage: response.data.data.pagination.last_page
+            });
         } catch (error) {
             console.error('Error fetching values:', error);
             showToast('Không thể tải danh sách giá trị', 'error');
@@ -57,8 +67,8 @@ export default function AttributeValues() {
 
     useEffect(() => {
         fetchAttributes();
-        fetchValues();
-    }, []);
+        fetchValues(pagination.currentPage);
+    }, [pagination.currentPage]);
 
     useEffect(() => {
         if (!values) return;
@@ -71,7 +81,6 @@ export default function AttributeValues() {
             );
         }
         setFilteredValues(result);
-        setCurrentPage(1);
     }, [searchTerm, values, attributes]);
 
     const handleDelete = async (id: number) => {
@@ -109,10 +118,10 @@ export default function AttributeValues() {
         }
     };
 
-    const totalPages = Math.ceil(filteredValues.length / itemsPerPage);
+    const totalPages = Math.ceil(filteredValues.length / pagination.perPage);
     const paginatedValues = filteredValues.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
+        (pagination.currentPage - 1) * pagination.perPage,
+        pagination.currentPage * pagination.perPage
     );
 
     return (
@@ -200,12 +209,14 @@ export default function AttributeValues() {
                         </div>
 
                         <Pagination
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onPageChange={setCurrentPage}
-                            totalItems={filteredValues.length}
-                            itemsPerPage={itemsPerPage}
-                            onItemsPerPageChange={setItemsPerPage}
+                            currentPage={pagination.currentPage}
+                            totalPages={pagination.lastPage}
+                            onPageChange={(page) => fetchValues(page)}
+                            totalItems={pagination.total}
+                            itemsPerPage={pagination.perPage}
+                            onItemsPerPageChange={(newPerPage) => {
+                                fetchValues(1, newPerPage);
+                            }}
                         />
                     </>
                 )}

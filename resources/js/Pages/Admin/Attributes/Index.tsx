@@ -30,16 +30,25 @@ export default function Attributes() {
 
     // Search and Pagination states
     const [searchTerm, setSearchTerm] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
+    const [pagination, setPagination] = useState({
+        currentPage: 1,
+        perPage: 20,
+        total: 0,
+        lastPage: 1
+    });
     const [filteredAttributes, setFilteredAttributes] = useState<Attribute[]>([]);
-    const [itemsPerPage, setItemsPerPage] = useState(5);
 
-    // Fetch attributes from API
-    const fetchAttributes = async () => {
+    const fetchAttributes = async (page: number = 1, perPage: number = pagination.perPage) => {
         try {
             setLoading(true);
-            const response = await attributesService.getAllAttributes();
-            setAttributes(response.data.data);
+            const response = await attributesService.getAllAttributes(page, perPage);
+            setAttributes(response.data.data.data);
+            setPagination({
+                currentPage: response.data.data.pagination.current_page,
+                perPage: response.data.data.pagination.per_page,
+                total: response.data.data.pagination.total,
+                lastPage: response.data.data.pagination.last_page
+            });
         } catch (error) {
             console.error('Error fetching attributes:', error);
             showToast('Không thể tải danh sách thuộc tính', 'error');
@@ -49,8 +58,8 @@ export default function Attributes() {
     };
 
     useEffect(() => {
-        fetchAttributes();
-    }, []);
+        fetchAttributes(pagination.currentPage);
+    }, [pagination.currentPage]);
 
     // Filter attributes
     useEffect(() => {
@@ -66,7 +75,6 @@ export default function Attributes() {
         }
 
         setFilteredAttributes(result);
-        setCurrentPage(1);
     }, [searchTerm, attributes]);
 
     const handleDelete = async (id: number) => {
@@ -74,7 +82,7 @@ export default function Attributes() {
             try {
                 await attributesService.deleteAttribute(id);
                 showToast('Xóa thuộc tính thành công', 'success');
-                fetchAttributes(); // Refresh list
+                fetchAttributes(pagination.currentPage); // Refresh list
             } catch (error) {
                 console.error('Error deleting attribute:', error);
                 showToast('Không thể xóa thuộc tính', 'error');
@@ -112,17 +120,17 @@ export default function Attributes() {
 
             setShowModal(false);
             setEditingAttribute(null);
-            fetchAttributes();
+            fetchAttributes(pagination.currentPage);
         } catch (error) {
             console.error('Error submitting attribute:', error);
             showToast('Có lỗi xảy ra', 'error');
         }
     };
 
-    const totalPages = Math.ceil(filteredAttributes.length / itemsPerPage);
+    const totalPages = Math.ceil(filteredAttributes.length / pagination.perPage);
     const paginatedAttributes = filteredAttributes.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
+        (pagination.currentPage - 1) * pagination.perPage,
+        pagination.currentPage * pagination.perPage
     );
 
     return (
@@ -226,12 +234,14 @@ export default function Attributes() {
 
                         {/* Pagination */}
                         <Pagination
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onPageChange={setCurrentPage}
-                            totalItems={filteredAttributes.length}
-                            itemsPerPage={itemsPerPage}
-                            onItemsPerPageChange={setItemsPerPage}
+                            currentPage={pagination.currentPage}
+                            totalPages={pagination.lastPage}
+                            onPageChange={(page) => fetchAttributes(page)}
+                            totalItems={pagination.total}
+                            itemsPerPage={pagination.perPage}
+                            onItemsPerPageChange={(newPerPage) => {
+                                fetchAttributes(1, newPerPage);
+                            }}
                         />
                     </>
                 )}

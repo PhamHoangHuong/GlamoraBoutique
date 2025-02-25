@@ -30,3 +30,21 @@ export interface CreateAttributeValueDTO {
 export interface UpdateAttributeValueDTO {
     value: string;
 }
+
+export interface PaginatedResponse<T> {
+    message: string;
+    data: {
+        data: T[];
+        pagination: {
+            current_page: number;
+            per_page: number;
+            total: number;
+            last_page: number;
+            prev_page: string | null;
+            next_page: string | null;
+        }
+    }
+}
+
+export interface AttributesResponse extends PaginatedResponse<Attribute> {}
+export interface AttributeValuesResponse extends PaginatedResponse<AttributeValue> {}

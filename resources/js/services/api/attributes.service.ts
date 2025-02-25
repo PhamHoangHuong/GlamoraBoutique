@@ -5,21 +5,15 @@ import type {
     CreateAttributeDTO,
     UpdateAttributeDTO,
     CreateAttributeValueDTO,
-    UpdateAttributeValueDTO 
+    UpdateAttributeValueDTO,
+    AttributesResponse,
+    AttributeValuesResponse
 } from '@/types/attributes';
-
-interface AttributesResponse {
-    data: Attribute[];
-}
-
-interface AttributeValuesResponse {
-    data: AttributeValue[];
-}
 
 export const attributesService = {
     // Attributes
-    getAllAttributes: () => 
-        api.get<AttributesResponse>('/v1/attributes'),
+    getAllAttributes: (page: number = 1, perPage: number = 20) => 
+        api.get<AttributesResponse>(`/v1/attributes?page=${page}&per_page=${perPage}`),
 
     getAttribute: (id: number) =>
         api.get<Attribute>(`/v1/attributes/${id}`),
@@ -34,8 +28,8 @@ export const attributesService = {
         api.delete(`/v1/attributes/${id}`),
 
     // Attribute Values
-    getAllAttributeValues: () => 
-        api.get<AttributeValuesResponse>('/v1/attribute-values'),
+    getAllAttributeValues: (page: number = 1, perPage: number = 20) => 
+        api.get<AttributeValuesResponse>(`/v1/attribute-values?page=${page}&per_page=${perPage}`),
 
     getAttributeValue: (id: number) =>
         api.get<{data: AttributeValue}>(`/v1/attribute-values/${id}`),
