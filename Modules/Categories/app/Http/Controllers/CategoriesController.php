@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Categories\Http\Requests\StoreCategoriesRequest;
 use Modules\Categories\Http\Requests\UpdateCategoriesRequest;
 use Modules\Categories\Repositories\CategoriesRepositoryInterface;
+use Modules\Categories\Transformers\CategoriesResource;
 use Modules\Traits\ImageUploadTrait;
 use Modules\Traits\PaginatedTrait;
 use Modules\Traits\ResponseTrait;
@@ -29,10 +30,11 @@ class CategoriesController extends Controller
     {
         try {
             $categories = $this->categoriesRepository->getPaginated($request);
-            if (empty($categories['data'])) {
+            if ($categories->isEmpty()) {
                 return $this->toResponseBad('Không tìm thấy dữ liệu', Response::HTTP_NOT_FOUND);
             }
-            return $this->toResponseSuccess($categories, 'Tìm thấy dữ liệu', Response::HTTP_OK);
+            return $this->toResponseSuccess(
+                $this->formatPaginatedResponse($categories,CategoriesResource::class), 'Tìm thấy dữ liệu', Response::HTTP_OK);
         } catch (\Exception $e) {
             $message = $e->getMessage();
             return $this->toResponseBad($message, Response::HTTP_INTERNAL_SERVER_ERROR);
