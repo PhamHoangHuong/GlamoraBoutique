@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Categories\Database\Seeders\CategoriesDatabaseSeeder;
+use Modules\GroupCustomer\Database\Seeders\GroupCustomerDatabaseSeeder;
 use Modules\Location\Database\Seeders\LocationDatabaseSeeder;
 use Modules\Auth\Database\Seeders\AuthDatabaseSeeder;
 use Modules\Customer\Database\Seeders\CustomerDatabaseSeeder;
@@ -18,6 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             LocationDatabaseSeeder::class,
             AuthDatabaseSeeder::class,
+            CategoriesDatabaseSeeder::class,
+            GroupCustomerDatabaseSeeder::class,
             CustomerDatabaseSeeder::class,
             AttributesDatabaseSeeder::class,
         ]);

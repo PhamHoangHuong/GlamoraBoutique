@@ -19,6 +19,8 @@ return new class extends Migration
                 $table->string('phone')->nullable()->comment('Số điện thoại');
                 $table->string('email')->unique()->comment('Email');
                 $table->string('address')->nullable()->comment('Địa chỉ');
+                $table->string('birthday')->nullable()->comment('Ngày sinh');
+                $table->tinyInteger('gender')->nullable()->comment('Giới tính');
                 $table->integer('point')->nullable()->default(0)->comment('Điểm thành viên');
                 $table->tinyInteger('status')->comment('Trạng thái tài khoản');
                 $table->string('password')->comment('Mật khẩu');
@@ -30,7 +32,7 @@ return new class extends Migration
                 $table->foreign('group_id')->references('id')->on('group_customers')->onDelete('cascade');
             });
         } else {
-            Schema::table('customers', function (Blueprint $table) {});
+            Schema::table('customer', function (Blueprint $table) {});
         }
     }
 
