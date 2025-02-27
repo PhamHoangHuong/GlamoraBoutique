@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255)->unique()->comment('Tên nguồn cung cấp');
             $table->string('address', 255)->comment('Địa chỉ cụ thể');
-            $table->unsignedBigInteger('province_id')->nullable();
-            $table->unsignedBigInteger('district_id')->nullable();
+            $table->string('province_id')->nullable();
+            $table->string('district_id')->nullable();
             $table->boolean('active')->default(true);
 
             $table->foreign('province_id')->references('code')->on('provinces')->onDelete('set null');
