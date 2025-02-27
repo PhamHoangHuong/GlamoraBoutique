@@ -11,6 +11,8 @@ class CollectionsDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            CollectionsSeeder::class,
+        ]);
     }
 }

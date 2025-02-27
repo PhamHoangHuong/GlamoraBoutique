@@ -11,6 +11,8 @@ class CartPriceRulesDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+         $this->call([
+             CartPriceRulesSeeder::class,
+         ]);
     }
 }

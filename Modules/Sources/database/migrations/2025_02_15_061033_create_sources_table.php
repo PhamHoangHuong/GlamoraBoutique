@@ -17,13 +17,10 @@ return new class extends Migration
             $table->string('address', 255)->comment('Địa chỉ cụ thể');
             $table->unsignedBigInteger('province_id')->nullable();
             $table->unsignedBigInteger('district_id')->nullable();
-            $table->unsignedBigInteger('ward_id')->nullable();
             $table->boolean('active')->default(true);
 
             $table->foreign('province_id')->references('code')->on('provinces')->onDelete('set null');
             $table->foreign('district_id')->references('code')->on('districts')->onDelete('set null');
-            $table->foreign('ward_id')->references('code')->on('wards')->onDelete('set null');
-
 
             $table->timestamps();
             $table->softDeletes();

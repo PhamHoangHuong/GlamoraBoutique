@@ -11,6 +11,8 @@ class CatalogPriceRulesDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            CatalogPriceRulesSeeder::class,
+        ]);
     }
 }
