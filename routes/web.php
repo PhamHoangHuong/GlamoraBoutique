@@ -47,6 +47,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/sources', function () {
         return Inertia::render('Admin/Sources/Index');
     })->name('sources');
+    Route::get('/login', function () {
+        return Inertia::render('Admin/Login/Index');
+    })->name('sources');
 });
 // Trang Home
 Route::get('/home', function () {
