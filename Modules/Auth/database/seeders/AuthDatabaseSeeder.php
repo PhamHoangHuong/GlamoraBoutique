@@ -14,7 +14,7 @@ class AuthDatabaseSeeder extends Seeder
         User::create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('Admin@123'),
             'email_verified_at' => now(),
         ]);
 
