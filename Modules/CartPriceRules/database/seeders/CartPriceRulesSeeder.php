@@ -30,7 +30,7 @@ class CartPriceRulesSeeder extends Seeder
                 "usage_limit" => 100,
                 "used" => 0,
                 "coupon_type" => 1,
-                "operator" => "greater_than_or_equal",
+                "operator" => 5, //greater_than_or_equal
                 "simple_action" => "by_percent",
                 "priority" => 1,
                 "sort_order" => 1
@@ -51,7 +51,7 @@ class CartPriceRulesSeeder extends Seeder
                 "usage_limit" => 200,
                 "used" => 0,
                 "coupon_type" => 1,
-                "operator" => "greater_than_or_equal",
+                "operator" => 5, //greater_than_or_equal
                 "simple_action" => "by_fixed",
                 "priority" => 2,
                 "sort_order" => 2
@@ -72,7 +72,7 @@ class CartPriceRulesSeeder extends Seeder
                 "usage_limit" => 50,
                 "used" => 0,
                 "coupon_type" => 1,
-                "operator" => "equal",
+                "operator" => 3, //"equal"
                 "simple_action" => "by_fixed",
                 "priority" => 3,
                 "sort_order" => 3
@@ -93,7 +93,7 @@ class CartPriceRulesSeeder extends Seeder
                 "usage_limit" => 150,
                 "used" => 0,
                 "coupon_type" => 1,
-                "operator" => "less_than_or_equal",
+                "operator" => 6, //"less_than_or_equal",
                 "simple_action" => "by_percent",
                 "priority" => 1,
                 "sort_order" => 1
@@ -114,7 +114,7 @@ class CartPriceRulesSeeder extends Seeder
                 "usage_limit" => 120,
                 "used" => 0,
                 "coupon_type" => 1,
-                "operator" => "less_than",
+                "operator" => 2, //"less_than",
                 "simple_action" => "by_fixed",
                 "priority" => 2,
                 "sort_order" => 2
@@ -135,7 +135,7 @@ class CartPriceRulesSeeder extends Seeder
                 "usage_limit" => 100,
                 "used" => 0,
                 "coupon_type" => 1,
-                "operator" => "greater_than",
+                "operator" => 1, //"greater_than",
                 "simple_action" => "by_percent",
                 "priority" => 3,
                 "sort_order" => 3
